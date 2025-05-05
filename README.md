@@ -1,5 +1,9 @@
-# P.I.W.O.
-## Polska Internetowa Witryna Ocenowa
+
+<img src=https://github.com/user-attachments/assets/9e6cc233-941e-47ed-98ea-074f58992e7c alt="PIWO logo" height=100 width=300>
+<img src=https://github.com/user-attachments/assets/6538f1bd-eb44-4cb4-88a7-06adee6ebb27 alt="Python logo" height=100 width=120 align="right">
+
+# Polska Internetowa Witryna Ocenowa
+
 
 Aplikacja w Pythonie reprezentująca dziennik elektroniczny.
 
