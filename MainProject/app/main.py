@@ -1,10 +1,5 @@
-from app.services.student_service import StudentService
-import app.models.attendance
-import app.models.grade
-import app.models.subject
-import app.models.student
-
-#StudentService.add_student("Michał", "Tomaszewski", "21370420690")
-print(StudentService.get_student(4))
-StudentService.edit_student(4, "El Roberto", "Lewandowski", "21212121212")
-print(StudentService.get_student(4))
+# TODO na 15.05.2025
+# - napisanie do cwiczeniowca, czy mozemy zrobic projekt z uwzglednieniem wielu przedmiotow
+# - jesli tak, to stworzenie nowej tabeli Zagrozenia, ktora mowi, czy student jest zagrozony z danego przedmiotu
+# - dodanie tej tabeli do kodu
+# - poprawienie logiki (dostosowanie metod i modeli)
