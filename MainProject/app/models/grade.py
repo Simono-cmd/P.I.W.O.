@@ -1,0 +1,53 @@
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from app.database.database import Base
+from sqlalchemy.orm import validates
+
+
+class Grade(Base):
+    __tablename__ = 'grades'
+
+    id = Column(Integer, primary_key=True)
+    student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
+    subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
+    type = Column(String, nullable=False) #test/short test/homework
+    value = Column(Integer, nullable=False)
+
+
+    # Validations
+    @validates('id', 'student_id', 'subject_id')
+    def validate_fields(self, key, value):
+        if value < 0:
+            raise ValueError(f"{key.capitalize()} must not be lesser than 0")
+        return value
+
+    @validates('type')
+    def validate_type(self, key, value):
+        allowed_types = ['test', 'short test', 'homework']
+        if value not in allowed_types:
+            raise ValueError(f"Type must be one of {', '.join(allowed_types)}")
+        return value
+
+    @validates('value')
+    def validate_value(self, key, value):
+        if not (1 <= value <= 6):
+            raise ValueError("Grade value must be between 1 and 6")
+        return value
+
+    @validates('type')
+    def validate_type(self, key, value):
+        allowed_types = ['test', 'short test', 'homework']
+        if value not in allowed_types:
+            raise ValueError(f"Type must be one of {', '.join(allowed_types)}")
+        return value
+
+    @validates('value')
+    def validate_value(self, key, value):
+        if not (1 <= value <= 6):
+            raise ValueError("Grade value must be between 1 and 6")
+        return value
+
+
+    # Relationships
+    student = relationship("Student", backref="grades")
+    subject = relationship("Subject", backref="grades")
