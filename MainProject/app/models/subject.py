@@ -22,6 +22,10 @@ class Subject(Base):
             raise ValueError("Name cannot be empty")
         return value
 
+    # toString
+    def __str__(self):
+        return f"Subject #{self.id}: {self.name}"
+
     # Relationships
-    grades = relationship("Grade", backref="subject")
-    attendances = relationship("Attendance", backref="subject")
+    attendances = relationship("Attendance", back_populates="subject")
+    grades = relationship("Grade", back_populates="subject")
