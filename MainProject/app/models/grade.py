@@ -47,7 +47,11 @@ class Grade(Base):
             raise ValueError("Grade value must be between 1 and 6")
         return value
 
+    # toString
+    def __str__(self):
+        return (f"Grade(id={self.id}, student_id={self.student_id}, subject_id={self.subject_id}, "
+                f"type='{self.type}', value={self.value})")
 
     # Relationships
-    student = relationship("Student", backref="grades")
-    subject = relationship("Subject", backref="grades")
+    student = relationship("Student", back_populates="grades")
+    subject = relationship("Subject", back_populates="grades")

@@ -32,14 +32,16 @@ class Attendance(Base):
     @validates('date')
     def validate_date(self, key, value):
         if not value:
-            raise ValueError("Date cannot be empty")
+            return datetime.now()
         if not isinstance(value, datetime):
             raise ValueError("Insert date in a datetime format")
         return value
 
+    # toString
+    def __str__(self):
+        return f"Id: {self.id}, StudentID: {self.student_id}, SubjectID: {self.subject_id}, Status: {self.status}, Date: {self.date}"
 
-    # Relationships
-    student = relationship("Student", backref="attendances")
-    subject = relationship("Subject", backref="attendances")
-
+    #ORM Relationships
+    student = relationship("Student", back_populates="attendances")
+    subject = relationship("Subject", back_populates="attendances")
 

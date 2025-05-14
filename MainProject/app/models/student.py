@@ -1,5 +1,5 @@
 import re
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from app.database.database import Base
 from sqlalchemy.orm import validates
@@ -33,6 +33,10 @@ class Student(Base):
             raise ValueError("PESEL must be a valid 11-digit number")
         return value
 
+    # toString
+    def __str__(self):
+        return f"Student #{self.id}: {self.name} {self.surname}, PESEL: {self.pesel}"
+
     # Relationships
-    grades = relationship("Grade", backref="student")
-    attendances = relationship("Attendance", backref="student")
+    attendances = relationship("Attendance", back_populates="student")
+    grades = relationship("Grade", back_populates="student")
