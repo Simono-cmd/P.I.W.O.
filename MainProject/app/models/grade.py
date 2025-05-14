@@ -10,8 +10,8 @@ class Grade(Base):
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
     subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
-    type = Column(String, nullable=False) #test/short test/homework
-    value = Column(Integer, nullable=False)
+    form = Column(String, nullable=False) #test/short test/homework
+    worth = Column(Integer, nullable=False) #1-6
 
 
     # Validations
