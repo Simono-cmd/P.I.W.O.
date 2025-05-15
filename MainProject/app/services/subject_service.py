@@ -7,3 +7,5 @@ from sqlalchemy.exc import NoResultFound
 
 class SubjectService:
     pass
+
+#średnia z przedmiotu dla wszystkich uczniów
