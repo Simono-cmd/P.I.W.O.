@@ -11,17 +11,17 @@ Aplikacja w Pythonie reprezentująca dziennik elektroniczny.
 
 ### Funkcje aplikacji:
 
-- [ ] Dodanie, usunięcie lub edycja ucznia wraz z jego imieniem, nazwiskiem i numerem PESEL.
-- [ ] Sprawdzenie listy obecności: każdy uczeń może być oznaczony jako **obecny**, **nieobecny**, **usprawiedliwiony** lub **spóźniony**.
-- [ ] Wystawianie ocen uczniom za **prace domowe**, **kartkówki** lub **sprawdziany**.
-- [ ] Możliwość edycji ocen oraz zmiany obecności w danym dniu.
-- [ ] Wyświetlanie wybranego ucznia (imię i nazwisko) oraz jego **ocen** lub **obecności**.
-- [ ] Wystawianie zagrożeń, gdy uczeń:
+- [x] Dodanie, usunięcie lub edycja ucznia wraz z jego imieniem, nazwiskiem i numerem PESEL.
+- [x] Sprawdzenie listy obecności: każdy uczeń może być oznaczony jako **obecny**, **nieobecny**, **usprawiedliwiony** lub **spóźniony**.
+- [x] Wystawianie ocen uczniom za **prace domowe**, **kartkówki** lub **sprawdziany**.
+- [x] Możliwość edycji ocen oraz zmiany obecności w danym dniu.
+- [x] Wyświetlanie wybranego ucznia (imię i nazwisko) oraz jego **ocen** lub **obecności**.
+- [x] Wystawianie zagrożeń, gdy uczeń:
   - Ma więcej niż **2 nieobecności**
   - Spóźnił się na **połowę lekcji**
   - Ma **średnią poniżej 3**
-- [ ] Dodanie metody do **wyświetlania średniej ucznia** po jej wywołaniu.
-- [ ] Dodanie metody do **sprawdzenia statusu ucznia** (zagrożony / niezagrożony).
+- [x] Dodanie metody do **wyświetlania średniej ucznia** po jej wywołaniu.
+- [x] Dodanie metody do **sprawdzenia statusu ucznia** (zagrożony / niezagrożony).
 - [ ] Generowanie raportów z ocen i obecności uczniów w formacie **.xlsx**.
 - [ ] Dodanie funkcji do **generowania statystyk i analizy danych** dotyczących:
   - Poszczególnych uczniów
