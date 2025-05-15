@@ -63,7 +63,7 @@ def test_student_repository():
         print(AttendanceRepository.get_attendance_inside_another_transaction(session=session, attendance_id=attendance1))
         print(GradeRepository.get_grade_inside_another_transaction(session=session, grade_id=grade1))
 
-        StudentRepository.delete_student(student_id=student1)
+        StudentRepository.delete_student_inside_another_transaction(session=session, student_id=student1)
         SubjectRepository.delete_subject_inside_another_transaction(session=session, subject_id=subject1)
 
         with pytest.raises(NoResultFound):
