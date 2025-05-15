@@ -11,7 +11,7 @@ class Failure(Base):
     # Validations
     @validates('student_id', 'subject_id')
     def validate_id(self, key, value):
-        if value < 0:
+        if value is not None and value < 0:
             raise ValueError(f"{key.capitalize()} must not be lesser than 0")
         return value
 

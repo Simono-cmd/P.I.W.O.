@@ -5,13 +5,13 @@ from sqlalchemy.exc import NoResultFound
 
 class AttendanceRepository:
     @staticmethod
-    def add_attendance(student_id: int, subject_id: int, status: str, date: datetime):
+    def add_attendance(student_id: int, subject_id: int, status: str, date: datetime) -> int:
         session = SessionLocal()
         try:
             attendance = Attendance(student_id=student_id, subject_id=subject_id, status=status, date=date)
             session.add(attendance)
             session.commit()
-            return attendance
+            return attendance.id
         except Exception:
             session.rollback()
             raise
@@ -32,7 +32,7 @@ class AttendanceRepository:
             if status: attendance.status = status
             if date: attendance.date = date
             session.commit()
-            session.refresh()
+            session.refresh(attendance)
             return attendance
         except Exception:
             session.rollback()
@@ -58,7 +58,7 @@ class AttendanceRepository:
 
     @staticmethod
     def get_attendance(attendance_id: int):
-        session = SessionLocal
+        session = SessionLocal()
         try:
             attendance = session.query(Attendance).get(attendance_id)
             if attendance is None:
@@ -67,3 +67,48 @@ class AttendanceRepository:
             return attendance
         finally:
             session.close()
+
+######################################################################################
+
+
+    @staticmethod
+    def add_attendance_inside_another_transaction(session: SessionLocal, student_id: int, subject_id: int, status: str, date: datetime) -> int:
+        attendance = Attendance(student_id=student_id, subject_id=subject_id, status=status, date=date)
+        session.add(attendance)
+        session.flush()
+        return attendance.id
+
+
+    @staticmethod
+    def edit_attendance_inside_another_transaction(session: SessionLocal, attendance_id: int, student_id: int = None, subject_id: int = None, status: str = None,
+                        date: datetime = None):
+            attendance = session.query(Attendance).get(attendance_id)
+            if attendance is None:
+                raise NoResultFound("Attendance with id {} not found".format(attendance_id))
+
+            if student_id: attendance.student_id = student_id
+            if subject_id: attendance.subject_id = subject_id
+            if status: attendance.status = status
+            if date: attendance.date = date
+            session.flush()
+
+
+    @staticmethod
+    def delete_attendance_inside_another_transaction(session: SessionLocal, attendance_id: int):
+
+        attendance = session.query(Attendance).get(attendance_id)
+        if attendance is None:
+            raise NoResultFound("Attendance with id {} not found".format(attendance_id))
+
+        session.delete(attendance)
+        session.flush()
+
+
+    @staticmethod
+    def get_attendance_inside_another_transaction(session: SessionLocal, attendance_id: int):
+        attendance = session.query(Attendance).get(attendance_id)
+        if attendance is None:
+            raise NoResultFound("Attendance with id {} not found".format(attendance_id))
+
+        session.flush()
+        return attendance

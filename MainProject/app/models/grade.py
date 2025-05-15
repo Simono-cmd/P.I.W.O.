@@ -3,7 +3,6 @@ from sqlalchemy.orm import relationship
 from app.database.database import Base
 from sqlalchemy.orm import validates
 
-
 class Grade(Base):
     __tablename__ = 'grades'
 
@@ -17,7 +16,7 @@ class Grade(Base):
     # Validations
     @validates('id', 'student_id', 'subject_id')
     def validate_fields(self, key, value):
-        if value < 0:
+        if value is not None and value < 0:
             raise ValueError(f"{key.capitalize()} must not be lesser than 0")
         return value
 
@@ -38,7 +37,7 @@ class Grade(Base):
     # toString
     def __str__(self):
         return (f"Grade(id={self.id}, student_id={self.student_id}, subject_id={self.subject_id}, "
-                f"type='{self.type}', value={self.value})")
+                f"form='{self.form}', worth={self.worth})")
 
     # Relationships
     student = relationship("Student", back_populates="grades")

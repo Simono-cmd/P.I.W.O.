@@ -4,12 +4,11 @@ from app.database.database import Base
 from sqlalchemy.orm import validates
 from datetime import datetime
 
-
 class Attendance(Base):
     __tablename__ = 'attendances'
 
     id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
+    student_id = Column(Integer, ForeignKey('students.id'), nullable=False)
     subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
     status = Column(String, nullable=False) #present/absent/excused/late
     date = Column(DateTime, nullable=False)
@@ -18,7 +17,7 @@ class Attendance(Base):
 
     @validates('id', 'student_id', 'subject_id')
     def validate_ids(self, key, value):
-        if value < 0:
+        if value is not None and value < 0:
             raise ValueError(f"{key.capitalize()} must not be negative")
         return value
 

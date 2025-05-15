@@ -12,7 +12,7 @@ class Subject(Base):
     # Validations
     @validates('id')
     def validate_id(self, key, value):
-        if value < 0:
+        if value is not None and value < 0:
             raise ValueError("ID must not be lesser than 0")
         return value
 
@@ -27,6 +27,6 @@ class Subject(Base):
         return f"Subject #{self.id}: {self.name}"
 
     # Relationships
-    attendances = relationship("Attendance", back_populates="subject")
-    grades = relationship("Grade", back_populates="subject")
-    failures = relationship("Failure", back_populates="subject")
+    attendances = relationship("Attendance", back_populates="subject", cascade="all, delete-orphan")
+    grades = relationship("Grade", back_populates="subject", cascade="all, delete-orphan")
+    failures = relationship("Failure", back_populates="subject", cascade="all, delete-orphan")
