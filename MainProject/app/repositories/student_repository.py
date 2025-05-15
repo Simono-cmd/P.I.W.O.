@@ -29,6 +29,7 @@ class StudentRepository:
             student = session.query(Student).get(student_id)
             if not student:
                 raise NoResultFound(f"Student with id {student_id} not found")
+
             if name: student.name = name
             if surname: student.surname = surname
             if pesel: student.pesel = pesel

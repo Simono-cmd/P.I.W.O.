@@ -1,6 +1,8 @@
 from app.database.database import SessionLocal
 from app.models.grade import Grade
 from sqlalchemy.exc import NoResultFound
+from app.services.failure_service import FailureService
+
 
 class GradeRepository:
 
@@ -11,6 +13,7 @@ class GradeRepository:
             grade = Grade(student_id=student_id, subject_id=subject_id, form=form, worth=worth)
             session.add(grade)
             session.commit()
+            FailureService.evaluate_student_risk(student_id, subject_id)
             return grade
         except Exception:
             session.rollback()
@@ -31,6 +34,7 @@ class GradeRepository:
             if form: grade.form = form
             if worth: grade.worth = worth
             session.commit()
+            FailureService.evaluate_student_risk(student_id, subject_id)
             return grade
         except NoResultFound:
             session.rollback()
@@ -45,9 +49,11 @@ class GradeRepository:
             grade = session.query(Grade).get(grade_id)
             if grade is None:
                 raise NoResultFound("Grade with id {} not found".format(grade_id))
-
+            student_id = grade.student_id
+            subject_id = grade.subject_id
             session.delete(grade)
             session.commit()
+            FailureService.evaluate_student_risk(student_id, subject_id)
         except Exception:
             session.rollback()
             raise
