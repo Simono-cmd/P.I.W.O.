@@ -11,7 +11,6 @@ class Student(Base):
     name = Column(String, nullable=False)
     surname = Column(String, nullable=False)
     pesel = Column(String, nullable=False)
-    atRisk = Column(Boolean, nullable=False, default=False)
 
     # Validations
     @validates('id')
@@ -41,3 +40,4 @@ class Student(Base):
     # Relationships
     attendances = relationship("Attendance", back_populates="student")
     grades = relationship("Grade", back_populates="student")
+    failures = relationship("Failure", back_populates="student")

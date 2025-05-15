@@ -29,3 +29,4 @@ class Subject(Base):
     # Relationships
     attendances = relationship("Attendance", back_populates="subject")
     grades = relationship("Grade", back_populates="subject")
+    failures = relationship("Failure", back_populates="subject")

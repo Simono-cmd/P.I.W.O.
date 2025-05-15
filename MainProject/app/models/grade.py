@@ -21,31 +21,19 @@ class Grade(Base):
             raise ValueError(f"{key.capitalize()} must not be lesser than 0")
         return value
 
-    @validates('type')
+    @validates('form')
     def validate_type(self, key, value):
         allowed_types = ['test', 'short test', 'homework']
         if value not in allowed_types:
             raise ValueError(f"Type must be one of {', '.join(allowed_types)}")
         return value
 
-    @validates('value')
+    @validates('worth')
     def validate_value(self, key, value):
         if not (1 <= value <= 6):
             raise ValueError("Grade value must be between 1 and 6")
         return value
 
-    @validates('type')
-    def validate_type(self, key, value):
-        allowed_types = ['test', 'short test', 'homework']
-        if value not in allowed_types:
-            raise ValueError(f"Type must be one of {', '.join(allowed_types)}")
-        return value
-
-    @validates('value')
-    def validate_value(self, key, value):
-        if not (1 <= value <= 6):
-            raise ValueError("Grade value must be between 1 and 6")
-        return value
 
     # toString
     def __str__(self):
