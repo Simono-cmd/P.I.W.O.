@@ -1,8 +1,6 @@
 from datetime import datetime
-
 import pytest
 from sqlalchemy.exc import NoResultFound
-
 from app.database.database import SessionLocal
 from app.repositories.attendance_repository import AttendanceRepository
 from app.repositories.student_repository import StudentRepository
