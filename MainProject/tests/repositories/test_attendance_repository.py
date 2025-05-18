@@ -19,12 +19,12 @@ def test_attendance_repository():
         pesel = "14205914328"
         subject_name = "Test3"
         status = "absent"
-        date = datetime(2025, 11, 11)
+        date = datetime(2025, 11, 11, 22, 22)
 
-        studentID = StudentRepository.add_student_inside_another_transaction(session, name, surname, pesel)
-        subjectID = SubjectRepository.add_subject_inside_another_transaction(session, subject_name)
-        attendanceID = AttendanceRepository.add_attendance_inside_another_transaction(session, student_id=studentID, subject_id=subjectID, status=status, date=date)
-        attendance = AttendanceRepository.get_attendance_inside_another_transaction(session, attendanceID)
+        student_id = StudentRepository.add_student_inside_another_transaction(session, name, surname, pesel)
+        subject_id = SubjectRepository.add_subject_inside_another_transaction(session, subject_name)
+        attendance_id = AttendanceRepository.add_attendance_inside_another_transaction(session, student_id=student_id, subject_id=subject_id, status=status, date_of=date)
+        attendance = AttendanceRepository.get_attendance_inside_another_transaction(session, attendance_id)
 
         assert attendance is not None
         assert attendance.status == status
@@ -32,24 +32,24 @@ def test_attendance_repository():
 
         #edit
         status = "late"
-        AttendanceRepository.edit_attendance_inside_another_transaction(session, attendance_id=attendanceID, status=status)
-        attendance = AttendanceRepository.get_attendance_inside_another_transaction(session, attendance)
+        AttendanceRepository.edit_attendance_inside_another_transaction(session, attendance_id=attendance_id, status=status)
+        attendance = AttendanceRepository.get_attendance_inside_another_transaction(session, attendance_id)
 
         assert attendance is not None
         assert attendance.status == status
 
-        StudentRepository.delete_student_inside_another_transaction(session, studentID)
-        SubjectRepository.delete_subject_inside_another_transaction(session, subjectID)
-        AttendanceRepository.delete_subject_inside_another_tranasction(session, attendanceID)
+        StudentRepository.delete_student_inside_another_transaction(session, student_id)
+        SubjectRepository.delete_subject_inside_another_transaction(session, subject_id)
+        # attendance is being deleted automatically
 
         with pytest.raises(NoResultFound):
-            StudentRepository.get_student_inside_another_transaction(session, studentID)
-            SubjectRepository.get_subject_inside_another_transaction(session, subjectID)
-            AttendanceRepository.get_attendance_inside_another_transaction(session, attendanceID)
+            StudentRepository.get_student_inside_another_transaction(session, student_id)
+
+        with pytest.raises(NoResultFound):
+            SubjectRepository.get_subject_inside_another_transaction(session, subject_id)
+
+        with pytest.raises(NoResultFound):
+            AttendanceRepository.get_attendance_inside_another_transaction(session, attendance_id)
     finally:
         session.rollback()
         session.close()
-
-
-
-

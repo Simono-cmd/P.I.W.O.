@@ -57,11 +57,7 @@ def test_student_repository():
         student1 = StudentRepository.add_student_inside_another_transaction(session=session, name="Grzyb", surname="Wielki", pesel="11111111111")
         subject1=SubjectRepository.add_subject_inside_another_transaction(session=session, name ="GigaPython")
         grade1= GradeRepository.add_grade_inside_another_transaction(session=session, student_id=student1, subject_id=subject1, form="test", worth=5)
-        attendance1=AttendanceRepository.add_attendance_inside_another_transaction(session=session, student_id=student1, subject_id=subject1, status="present", date=datetime.now())
-
-        print(StudentRepository.get_student_inside_another_transaction(session=session, student_id=student1))
-        print(AttendanceRepository.get_attendance_inside_another_transaction(session=session, attendance_id=attendance1))
-        print(GradeRepository.get_grade_inside_another_transaction(session=session, grade_id=grade1))
+        attendance1=AttendanceRepository.add_attendance_inside_another_transaction(session=session, student_id=student1, subject_id=subject1, status="present", date_of=datetime.now())
 
         StudentRepository.delete_student_inside_another_transaction(session=session, student_id=student1)
         SubjectRepository.delete_subject_inside_another_transaction(session=session, subject_id=subject1)
