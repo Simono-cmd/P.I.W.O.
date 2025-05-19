@@ -12,6 +12,7 @@ class Attendance(Base):
     subject_id = Column(Integer, ForeignKey("subjects.id"), nullable=False)
     status = Column(String, nullable=False) #present/absent/excused/late
     date = Column(DateTime, nullable=False)
+    possible_status_values = ["present", "late", "excused", "absent"]
 
     # Validations
 
