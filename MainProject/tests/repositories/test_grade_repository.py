@@ -16,16 +16,16 @@ def test_grade_repository():
         name = "Jan"
         surname = "Kowalski"
         pesel = "11111111111"
-        student_id = StudentRepository.add_student_inside_another_transaction(session, name, surname, pesel)
+        student_id = StudentRepository.add_student(session, name, surname, pesel)
 
         # subject
         name = "Python"
-        subject_id = SubjectRepository.add_subject_inside_another_transaction(session, name)
+        subject_id = SubjectRepository.add_subject(session, name)
 
         form = "short test"
         worth = 5
-        grade_id = GradeRepository.add_grade_inside_another_transaction(session, student_id, subject_id, form, worth)
-        grade = GradeRepository.get_grade_inside_another_transaction(session, grade_id)
+        grade_id = GradeRepository.add_grade(session, student_id, subject_id, form, worth)
+        grade = GradeRepository.get_grade(session, grade_id)
 
         assert grade is not None
         assert grade.id == grade_id
@@ -36,8 +36,8 @@ def test_grade_repository():
 
         form = "test"
         worth = 4
-        GradeRepository.edit_grade_inside_another_transaction(session, grade_id, form = form, worth = worth)
-        grade = GradeRepository.get_grade_inside_another_transaction(session, grade_id)
+        GradeRepository.edit_grade(session, grade_id, form = form, worth = worth)
+        grade = GradeRepository.get_grade(session, grade_id)
 
         assert grade is not None
         assert grade.id == grade_id
@@ -46,9 +46,9 @@ def test_grade_repository():
         assert grade.form == form
         assert grade.worth == worth
 
-        GradeRepository.delete_grade_inside_another_transaction(session, grade_id)
+        GradeRepository.delete_grade(session, grade_id)
         with pytest.raises(NoResultFound):
-            GradeRepository.get_grade_inside_another_transaction(session, grade_id)
+            GradeRepository.get_grade(session, grade_id)
     finally:
         session.rollback()
         session.close()

@@ -6,7 +6,7 @@ from sqlalchemy.exc import NoResultFound
 class AttendanceRepository:
 
     @staticmethod
-    def add_attendance_inside_another_transaction(session: SessionLocal, student_id: int, subject_id: int, status: str, date_of: datetime) -> int:
+    def add_attendance(session: SessionLocal, student_id: int, subject_id: int, status: str, date_of: datetime) -> int:
         attendance = Attendance(student_id=student_id, subject_id=subject_id, status=status, date=date_of)
         session.add(attendance)
         session.flush()
@@ -14,7 +14,7 @@ class AttendanceRepository:
 
 
     @staticmethod
-    def edit_attendance_inside_another_transaction(session: SessionLocal, attendance_id: int, student_id: int = None, subject_id: int = None, status: str = None,
+    def edit_attendance(session: SessionLocal, attendance_id: int, student_id: int = None, subject_id: int = None, status: str = None,
                         date_of: datetime = None):
             attendance = session.query(Attendance).get(attendance_id)
             if attendance is None:
@@ -28,7 +28,7 @@ class AttendanceRepository:
 
 
     @staticmethod
-    def delete_attendance_inside_another_transaction(session: SessionLocal, attendance_id: int):
+    def delete_attendance(session: SessionLocal, attendance_id: int):
 
         attendance = session.query(Attendance).get(attendance_id)
         if attendance is None:
@@ -39,7 +39,7 @@ class AttendanceRepository:
 
 
     @staticmethod
-    def get_attendance_inside_another_transaction(session: SessionLocal, attendance_id: int):
+    def get_attendance(session: SessionLocal, attendance_id: int):
         attendance = session.query(Attendance).get(attendance_id)
         if attendance is None:
             raise NoResultFound("Attendance with id {} not found".format(attendance_id))

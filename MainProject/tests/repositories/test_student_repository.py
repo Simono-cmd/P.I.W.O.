@@ -19,8 +19,8 @@ def test_student_repository():
         name = "Jan"
         surname = "Kowalski"
         pesel = "11111111111"
-        student_id = StudentRepository.add_student_inside_another_transaction(session, name, surname, pesel)
-        student_from_db = StudentRepository.get_student_inside_another_transaction(session, student_id)
+        student_id = StudentRepository.add_student(session, name, surname, pesel)
+        student_from_db = StudentRepository.get_student(session, student_id)
 
         assert student_from_db is not None
         assert student_from_db.id == student_id
@@ -32,8 +32,8 @@ def test_student_repository():
         name = "Eryk"
         surname = "Stanislawski"
         pesel = "22222222222"
-        StudentRepository.edit_student_inside_another_transaction(session, student_id, name, surname, pesel)
-        student_from_db = StudentRepository.get_student_inside_another_transaction(session, student_id)
+        StudentRepository.edit_student(session, student_id, name, surname, pesel)
+        student_from_db = StudentRepository.get_student(session, student_id)
 
         assert student_from_db is not None
         assert student_from_db.id == student_id
@@ -41,9 +41,9 @@ def test_student_repository():
         assert student_from_db.surname == surname
         assert student_from_db.pesel == pesel
 
-        StudentRepository.delete_student_inside_another_transaction(session, student_id)
+        StudentRepository.delete_student(session, student_id)
         with pytest.raises(NoResultFound):
-            StudentRepository.get_student_inside_another_transaction(session, student_id)
+            StudentRepository.get_student(session, student_id)
     finally:
         session.rollback()
         session.close()
@@ -54,19 +54,19 @@ def test_student_repository():
     session = SessionLocal()
     try:
 
-        student1 = StudentRepository.add_student_inside_another_transaction(session=session, name="Grzyb", surname="Wielki", pesel="11111111111")
-        subject1=SubjectRepository.add_subject_inside_another_transaction(session=session, name ="GigaPython")
-        grade1= GradeRepository.add_grade_inside_another_transaction(session=session, student_id=student1, subject_id=subject1, form="test", worth=5)
-        attendance1=AttendanceRepository.add_attendance_inside_another_transaction(session=session, student_id=student1, subject_id=subject1, status="present", date_of=datetime.now())
+        student1 = StudentRepository.add_student(session=session, name="Grzyb", surname="Wielki", pesel="11111111111")
+        subject1=SubjectRepository.add_subject(session=session, name ="GigaPython")
+        grade1= GradeRepository.add_grade(session=session, student_id=student1, subject_id=subject1, form="test", worth=5)
+        attendance1=AttendanceRepository.add_attendance(session=session, student_id=student1, subject_id=subject1, status="present", date_of=datetime.now())
 
-        StudentRepository.delete_student_inside_another_transaction(session=session, student_id=student1)
-        SubjectRepository.delete_subject_inside_another_transaction(session=session, subject_id=subject1)
-
-        with pytest.raises(NoResultFound):
-            AttendanceRepository.get_attendance_inside_another_transaction(session=session, attendance_id=attendance1)
+        StudentRepository.delete_student(session=session, student_id=student1)
+        SubjectRepository.delete_subject(session=session, subject_id=subject1)
 
         with pytest.raises(NoResultFound):
-            GradeRepository.get_grade_inside_another_transaction(session=session, grade_id=grade1)
+            AttendanceRepository.get_attendance(session=session, attendance_id=attendance1)
+
+        with pytest.raises(NoResultFound):
+            GradeRepository.get_grade(session=session, grade_id=grade1)
     finally:
         session.rollback()
         session.close()

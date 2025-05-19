@@ -6,7 +6,7 @@ from sqlalchemy.exc import NoResultFound
 class GradeRepository:
 
     @staticmethod
-    def add_grade_inside_another_transaction(session: SessionLocal, student_id: int, subject_id: int, form: str, worth: int) -> int:
+    def add_grade(session: SessionLocal, student_id: int, subject_id: int, form: str, worth: int) -> int:
         grade = Grade(student_id=student_id, subject_id=subject_id, form=form, worth=worth)
         session.add(grade)
         session.flush()
@@ -14,7 +14,7 @@ class GradeRepository:
 
 
     @staticmethod
-    def edit_grade_inside_another_transaction(session: SessionLocal, grade_id: int, student_id: int = None, subject_id: int = None, form: str = None, worth: int = None) :
+    def edit_grade(session: SessionLocal, grade_id: int, student_id: int = None, subject_id: int = None, form: str = None, worth: int = None) :
         grade = session.query(Grade).get(grade_id)
         if grade is None:
             raise NoResultFound("Grade with id {} not found".format(grade_id))
@@ -27,7 +27,7 @@ class GradeRepository:
 
 
     @staticmethod
-    def delete_grade_inside_another_transaction(session: SessionLocal, grade_id: int):
+    def delete_grade(session: SessionLocal, grade_id: int):
         grade = session.query(Grade).get(grade_id)
         if grade is None:
             raise NoResultFound("Grade with id {} not found".format(grade_id))
@@ -36,7 +36,7 @@ class GradeRepository:
 
 
     @staticmethod
-    def get_grade_inside_another_transaction(session: SessionLocal, grade_id: int) -> Grade:
+    def get_grade(session: SessionLocal, grade_id: int) -> Grade:
             grade = session.query(Grade).get(grade_id)
             if grade is None:
                 raise NoResultFound("Grade with id {} not found".format(grade_id))

@@ -1,11 +1,12 @@
 from app.database.database import SessionLocal
+from app.models import Subject
 from app.repositories.subject_repository import SubjectRepository
 
 class SubjectService:
 
     @staticmethod
-    def add_subject_inside_another_transaction(session: SessionLocal, name: str) -> int:
-        return SubjectRepository.add_subject_inside_another_transaction(session, name)
+    def add_subject(session: SessionLocal, name: str) -> int:
+        return SubjectRepository.add_subject(session, name)
 
     @staticmethod
     def delete_subject_inside_another_transaction(session: SessionLocal, subject_id: int):

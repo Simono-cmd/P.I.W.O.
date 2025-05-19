@@ -7,22 +7,22 @@ class FailureService:
 
 
     @staticmethod
-    def evaluate_student_risk_inside_another_transaction(session: SessionLocal, student_id: int, subject_id: int):
-        grades = StudentService.get_student_grades_from_subject_inside_another_transaction(session, student_id, subject_id)
-        attendances = StudentService.get_student_attendances_from_subject_inside_another_transaction(session, student_id, subject_id)
+    def evaluate_student_risk(session: SessionLocal, student_id: int, subject_id: int):
+        grades = StudentService.get_student_grades_from_subject(session, student_id, subject_id)
+        attendances = StudentService.get_student_attendances_from_subject(session, student_id, subject_id)
 
         # calculate average
         if grades:
             avg_grade = sum([g.worth for g in grades]) / len(grades)
         else:
-            avg_grade = 0
+            avg_grade = 0.0
 
         # calculate absences
-        absences = [a for a in attendances if a.status == "absent"]
+        absences = [a for a in attendances if a.status.lower() == "absent"]
         num_absences = len(absences)
 
         # calculate late
-        latenesses = [a for a in attendances if a.status == "late"]
+        latenesses = [a for a in attendances if a.status.lower() == "late"]
         num_lates = len(latenesses)
 
         # total attendances
