@@ -22,8 +22,8 @@ Aplikacja w Pythonie reprezentująca dziennik elektroniczny.
   - Ma **średnią poniżej 3**
 - [x] Dodanie metody do **wyświetlania średniej ucznia** po jej wywołaniu.
 - [x] Dodanie metody do **sprawdzenia statusu ucznia** (zagrożony / niezagrożony).
-- [ ] Generowanie raportów z ocen i obecności uczniów w formacie **.xlsx**.
-- [ ] Dodanie funkcji do **generowania statystyk i analizy danych** dotyczących:
+- [x] Generowanie raportów z ocen i obecności uczniów w formacie **.xlsx**.
+- [x] Dodanie funkcji do **generowania statystyk i analizy danych** dotyczących:
   - Poszczególnych uczniów
   - Całej klasy
   - **Wizualizacja danych za pomocą co najmniej 3 wykresów**
@@ -42,19 +42,19 @@ A Python application representing an electronic gradebook.
 
 ### Application Features:
 
-- [ ] Add, remove, or edit a student along with their first name, last name, and PESEL number.
-- [ ] Check attendance: each student can be marked as **present**, **absent**, **excused**, or **late**.
-- [ ] Assign grades to students for **homework**, **quizzes**, or **tests**.
-- [ ] Edit grades and modify attendance records for a given date.
-- [ ] Display a selected student (first and last name) along with their **grades** or **attendance**.
-- [ ] Issue warnings if a student has:
+- [x] Add, remove, or edit a student along with their first name, last name, and PESEL number.
+- [x] Check attendance: each student can be marked as **present**, **absent**, **excused**, or **late**.
+- [x] Assign grades to students for **homework**, **quizzes**, or **tests**.
+- [x] Edit grades and modify attendance records for a given date.
+- [x] Display a selected student (first and last name) along with their **grades** or **attendance**.
+- [x] Issue warnings if a student has:
   - More than **2 absences**
   - Is **late to half of the classes**
   - Has an **average grade below 3**
-- [ ] Add a method to **display the student's average grade** when called.
-- [ ] Add a method to **check the student's status** (at risk / not at risk).
-- [ ] Generate reports of students' grades and attendance in **.xlsx format**.
-- [ ] Add functionality for **data analysis and statistics** regarding:
+- [x] Add a method to **display the student's average grade** when called.
+- [x] Add a method to **check the student's status** (at risk / not at risk).
+- [x] Generate reports of students' grades and attendance in **.xlsx format**.
+- [x] Add functionality for **data analysis and statistics** regarding:
   - Individual students
   - The entire class
   - **Visualize the data with at least 3 charts**
