@@ -1,5 +1,6 @@
 from sqlalchemy.exc import NoResultFound
 from app.database.database import SessionLocal
+from app.models import Student, Attendance
 from app.models.subject import Subject
 
 
@@ -35,3 +36,18 @@ class SubjectRepository:
         if subject is None:
             raise NoResultFound("Subject with id {} not found".format(subject_id))
         return subject
+
+    @staticmethod
+    def delete_subject_name(session: SessionLocal, subject_name: str):
+        subject = session.query(Subject).get(subject_name)
+        session.delete(subject)
+        session.flush()
+
+    @staticmethod
+    def get_students_enrolled_in_subject(session: SessionLocal, subject_name: int):
+        return session.query(Student) \
+            .select_from(Attendance) \
+            .join(Subject, Subject.id == Attendance.subject_id) \
+            .join(Student, Student.id == Attendance.student_id) \
+            .filter(Subject.name == subject_name and Attendance.subject_id == Subject.id) \
+            .all()

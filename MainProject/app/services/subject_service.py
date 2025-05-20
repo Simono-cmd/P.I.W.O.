@@ -1,5 +1,5 @@
 from app.database.database import SessionLocal
-from app.models import Subject
+from app.models import Subject, Student, Attendance
 from app.repositories.subject_repository import SubjectRepository
 
 class SubjectService:
@@ -13,6 +13,10 @@ class SubjectService:
         SubjectRepository.delete_subject(session, subject_id)
 
     @staticmethod
+    def delete_subject_name(session: SessionLocal, subject_name: str):
+        SubjectRepository.delete_subject_name(session, subject_name)
+
+    @staticmethod
     def edit_subject(session: SessionLocal, subject_id: int, name: str = None):
         SubjectRepository.edit_subject(session, subject_id, name)
 
@@ -22,5 +26,8 @@ class SubjectService:
 
     @staticmethod
     def get_all_subjects(session: SessionLocal):
-        subjects = session.query(Subject).all()
-        return [subj.name for subj in subjects]
+        return session.query(Subject).all()
+
+    @staticmethod
+    def get_students_enrolled_in_subject(session: SessionLocal, subject_name: str):
+        return SubjectRepository.get_students_enrolled_in_subject(session, subject_name)
