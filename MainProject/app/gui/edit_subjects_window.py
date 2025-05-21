@@ -13,7 +13,7 @@ class EditSubjectsWindow(CTkToplevel):
         self.grab_set()  # blokuje interakcję z innymi oknami aż to okno zostanie zamknięte
         self.focus()
         self.geometry("500x400")
-        self.iconbitmap("gui/icon.ico")
+        self.iconbitmap("gui/icons/editor.ico")
         self.resizable(False, False)
 
         self.selected_subject = IntVar(value=0)
