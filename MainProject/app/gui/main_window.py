@@ -7,13 +7,14 @@ from app.database.database import SessionLocal
 from app.gui.edit_attendances_window import EditAttendancesWindow
 from app.gui.edit_grades_window import EditGradesWindow
 from app.gui.edit_subjects_window import EditSubjectsWindow
+from app.gui.generate_reports_window import ReportWindow
 from app.gui.tool_tip import ToolTip
 from app.services.attendance_service import AttendanceService
 from app.services.student_service import StudentService
 from app.services.subject_service import SubjectService
 
 
-class MainWindow:
+class MainWindow(CTk):
     def __init__(self):
         # conf
         super().__init__()
@@ -180,12 +181,12 @@ class MainWindow:
         statistics_student_button.pack(pady=5, anchor="n")
 
     def run(self):
-        self.root.mainloop()
+        self.mainloop()
         self.sessionL.close()
 
     def open_subject_edit_window(self, subject_combo):
-        edit_window = EditSubjectsWindow(self.root, self.sessionL)
-        self.root.wait_window(edit_window)
+        edit_window = EditSubjectsWindow(self, self.sessionL)
+        self.wait_window(edit_window)
 
         subject_objects = SubjectService.get_all_subjects(self.sessionL)
         subject_names = [subject.name for subject in subject_objects]
@@ -305,4 +306,8 @@ class MainWindow:
 
     def open_statistics_for_student(self, student_id: int):
         StudentService.generate_statistics_for_student(self.sessionL, student_id)
+        report_window = ReportWindow(self, self.sessionL)
+
+    def open_statistics_for_everyone(self):
+        StudentService.generate_statistics_for_everyone(self.sessionL)
         report_window = ReportWindow(self, self.sessionL)

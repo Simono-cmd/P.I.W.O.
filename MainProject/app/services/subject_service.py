@@ -31,3 +31,7 @@ class SubjectService:
     @staticmethod
     def get_students_enrolled_in_subject(session: SessionLocal, subject_name: str):
         return SubjectRepository.get_students_enrolled_in_subject(session, subject_name)
+
+    @staticmethod
+    def find_subject_id_by_name(session: SessionLocal, subject_name: str):
+        return SubjectRepository.find_subject_id_by_name(session, subject_name)

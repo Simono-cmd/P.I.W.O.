@@ -51,3 +51,7 @@ class SubjectRepository:
             .join(Student, Student.id == Attendance.student_id) \
             .filter(Subject.name == subject_name and Attendance.subject_id == Subject.id) \
             .all()
+
+    @staticmethod
+    def find_subject_id_by_name(session: SessionLocal, subject_name: str):
+        return session.query(Subject.id).filter(Subject.name == subject_name).scalar()
