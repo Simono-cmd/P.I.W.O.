@@ -37,19 +37,20 @@ class EditGradesWindow(CTkToplevel):
         input_frame = CTkFrame(self)
         input_frame.pack(pady=10)
 
-        self.form_entry = CTkEntry(input_frame)
-        ToolTip(self.form_entry, text="Enter type [test/short test/homework]")
+        self.form_entry = CTkEntry(input_frame, placeholder_text="Grade type")
+        ToolTip(self.form_entry, text="Enter type [test/homework/short test]")
         self.form_entry.grid(row=0, column=0, padx=5)
 
-        self.worth_entry = CTkEntry(input_frame)
+        self.worth_entry = CTkEntry(input_frame, placeholder_text="Grade value")
+        ToolTip(self.worth_entry, text="Enter value [1-6]")
         self.worth_entry.grid(row=0, column=1, padx=5)
 
         button_frame = CTkFrame(self)
         button_frame.pack(pady=10, padx=30)
 
-        CTkButton(button_frame, text="Add", command=self.add_grade, width=80).grid(row=0, column=0, padx=5)
-        CTkButton(button_frame, text="Edit", command=self.edit_selected_grade, width=80).grid(row=0, column=1, padx=5)
-        CTkButton(button_frame, text="Delete", command=self.delete_selected_grade, width=80).grid(row=0, column=2,
+        CTkButton(button_frame, text="Add", command=self.add_grade, width=80, fg_color="#3c971d", hover_color="#327a1a" ).grid(row=0, column=0, padx=5)
+        CTkButton(button_frame, text="Edit", command=self.edit_selected_grade, width=80, fg_color="#fc8f0a", hover_color="#944309").grid(row=0, column=1, padx=5)
+        CTkButton(button_frame, text="Delete", command=self.delete_selected_grade, width=80, fg_color="#b30415", hover_color="#57030c").grid(row=0, column=2,
                                                                                                  padx=5)
 
     def load_grades(self):

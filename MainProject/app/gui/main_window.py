@@ -89,7 +89,7 @@ class MainWindow(CTk):
         self.scroll_frame.pack(fill="both", expand=True, pady=50)
 
         for student in self.students_enrolled:
-            full_name = f"{student.name} {student.surname} [{student.pesel}]"
+            full_name = f"{student.name} {student.surname}"
 
             label = CTkLabel(self.scroll_frame, text=full_name, text_color="white", anchor="w", fg_color="transparent")
             label.pack(fill="x", pady=5)
@@ -168,13 +168,13 @@ class MainWindow(CTk):
         for widget in self.report_buttons_frame.winfo_children():
             widget.destroy()
 
-        report_everyone_button = CTkButton(self.report_buttons_frame, text="Generate report for class", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black")
+        report_everyone_button = CTkButton(self.report_buttons_frame, text="Generate report for subject", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black")
         report_everyone_button.pack(pady=5, anchor="n")
 
         report_student_button = CTkButton(self.report_buttons_frame, text="Generate report for student", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black")
         report_student_button.pack(pady=5, anchor="n")
 
-        statistics_everyone_button = CTkButton(self.report_buttons_frame, text="Generate statistics for subject",  height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=self.open_statistics_for_everyone)
+        statistics_everyone_button = CTkButton(self.report_buttons_frame, text="Generate general statistics",  height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=self.open_statistics_for_everyone)
         statistics_everyone_button.pack(pady=5, anchor="n")
 
         statistics_student_button = CTkButton(self.report_buttons_frame, text="Generate statistics for student", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command= lambda: self.open_statistics_for_student(2))
