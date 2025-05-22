@@ -2,7 +2,7 @@ import os
 import shutil
 from pathlib import Path
 from openpyxl.styles import Font, PatternFill
-from sqlalchemy import func
+from sqlalchemy import func, cast, Float
 from sqlalchemy.exc import NoResultFound
 from app.database.database import SessionLocal
 from app.models import Subject, Student
@@ -142,7 +142,7 @@ class StudentService:
         bars = plt.bar(subjects, values, color='skyblue')
         plt.title("Average per subject")
         plt.ylabel("Average")
-        plt.ylim(0, 5)
+        plt.ylim(1, 6)
 
         for bar in bars:
             yval = bar.get_height()
@@ -213,23 +213,18 @@ class StudentService:
         statistics_folder.mkdir(parents=True, exist_ok=True)
         full_path = statistics_folder
 
-        # calculate average grade value for each subject
         grades = session.query(Subject.name, func.avg(Grade.worth)).select_from(Grade).join(Subject, Subject.id == Grade.subject_id).join(Student, Student.id == Grade.student_id).filter(Grade.student_id == student_id).group_by(Subject.name).all()
 
-        # calculate average attendences per subject
         subject_count = session.query(func.count(func.distinct(Attendance.subject_id))).filter(Attendance.student_id == student_id).scalar()
         if subject_count != 0:
             attendences = session.query(Attendance.status, func.count(Attendance.status) / subject_count).filter(Attendance.student_id == student_id).group_by(Attendance.status).all()
         else :
             attendences = []
 
-
-        # calculate percentage of how many subjects are being failed
         if subject_count != 0:
             failure_percentage = session.query(func.count(Failure.student_id)).filter(Failure.student_id == student_id).scalar() / subject_count * 100
         else:
             failure_percentage = 0
-
 
         if grades:
             subjects, avg_grades = zip(*grades)
@@ -266,7 +261,6 @@ class StudentService:
             plt.savefig(full_path / "passed.png")
             plt.close()
 
-
     @staticmethod
     def generate_statistics_for_everyone(session: SessionLocal):
         statistics_folder = "../Statistics"
@@ -278,47 +272,48 @@ class StudentService:
         statistics_folder.mkdir(parents=True, exist_ok=True)
         full_path = statistics_folder
 
-        # calculate average grade value for each subject
-        grades = session.query(Subject.name, func.avg(Grade.worth)).select_from(Grade).join(Subject, Subject.id == Grade.subject_id).group_by(Subject.name).all()
+        grades = session.query(
+            Subject.name,
+            func.avg(cast(Grade.worth, Float))
+        ).select_from(Grade).join(Subject, Subject.id == Grade.subject_id).group_by(Subject.name).all()
 
-        # calculate average attendences
         student_count = session.query(func.count(Student.id)).scalar()
         if student_count != 0:
-            attendances = session.query(Attendance.status, func.count(Attendance.status) / student_count).group_by(Attendance.status).all()
+            attendances = session.query(Attendance.status, func.count(Attendance.status)).group_by(
+                Attendance.status).all()
         else:
             attendances = []
 
-
-        # calculate percentage of people failing
         if student_count != 0:
-            failure_percentage = session.query(func.count(func.distinct(Failure.student_id))).scalar() / student_count * 100
+            failure_percentage = session.query(
+                func.count(func.distinct(Failure.student_id))).scalar() / student_count * 100
         else:
             failure_percentage = 0
 
-        print(grades)
-        print(attendances)
-        print(failure_percentage)
 
-        subjects, avg_grades = zip(*grades)
-        plt.figure(figsize=(8, 5))
-        plt.bar(subjects, avg_grades, color='skyblue')
-        plt.title('Average Grades per Subject')
-        plt.xlabel('Subjects')
-        plt.ylabel('Average Grade')
-        plt.xticks(rotation=45)
-        plt.tight_layout()
-        plt.savefig(full_path / "grades.png")
-        plt.close()
+        if grades:
+            subjects, avg_grades = zip(*grades)
+            plt.figure(figsize=(8, 5))
+            plt.bar(subjects, avg_grades, color='skyblue')
+            plt.title('Average Grades per Subject')
+            plt.xlabel('Subjects')
+            plt.ylabel('Average Grade')
+            plt.ylim(1, 6)
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+            plt.savefig(full_path / "grades.png")
+            plt.close()
 
-        statuses, counts = zip(*attendances)
-        plt.figure(figsize=(8, 5))
-        plt.bar(statuses, counts, color='lightgreen')
-        plt.title('Attendance Status Distribution')
-        plt.xlabel('Status')
-        plt.ylabel('Average Count per Student')
-        plt.tight_layout()
-        plt.savefig(full_path / "attendances.png")
-        plt.close()
+        if attendances:
+            statuses, counts = zip(*attendances)
+            plt.figure(figsize=(8, 5))
+            plt.bar(statuses, counts, color='#504ef2')
+            plt.title('Attendance Status Distribution')
+            plt.xlabel('Status')
+            plt.ylabel('Average Count per Student')
+            plt.tight_layout()
+            plt.savefig(full_path / "attendances.png")
+            plt.close()
 
         passed_percentage = 100 - failure_percentage
         labels = ['Failed', 'Passed']
