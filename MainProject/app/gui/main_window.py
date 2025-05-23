@@ -177,7 +177,7 @@ class MainWindow(CTk):
         statistics_everyone_button = CTkButton(self.report_buttons_frame, text="Generate general statistics",  height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=self.open_statistics_for_everyone)
         statistics_everyone_button.pack(pady=5, anchor="n")
 
-        statistics_student_button = CTkButton(self.report_buttons_frame, text="Generate statistics for student", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command= lambda: self.open_statistics_for_student(2))
+        statistics_student_button = CTkButton(self.report_buttons_frame, text="Generate statistics for student", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command= lambda: self.open_statistics_for_student(self.selected_student))
         statistics_student_button.pack(pady=5, anchor="n")
 
     def run(self):

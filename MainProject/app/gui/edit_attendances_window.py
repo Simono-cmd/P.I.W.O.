@@ -32,7 +32,7 @@ class EditAttendancesWindow(CTkToplevel):
         self.subject_name = subject_name
         self.subject_id = SubjectService.find_subject_id_by_name(session, subject_name)
 
-        self.title("Attendance Tracker")
+        self.title("Edit attendance")
         self.geometry("600x500")
         self.iconbitmap("gui/icons/editor.ico")
         self.grab_set()

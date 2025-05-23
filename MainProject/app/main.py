@@ -27,7 +27,13 @@ if __name__ == "__main__":
     app.run()
 
 # TODO
-# 1. przycisk statystyk ma zwracac statystyki dla konkretnego przedmiotu, a nie dla kazdego przedmiotu
-# 2. przycisku statystyk i reportu maja zwracac staty dla konkretnego studenta
-# 4. ogarnac wyjatki
-# 5. generowanie przykladowych danych
+# 1. podpiac raporty
+# 2. ogarnac wyjatki
+
+
+# dotenv
+# sqlalchemy
+# psycopg2
+# customtkinkter
+# openpyxl
+# matplotlib
