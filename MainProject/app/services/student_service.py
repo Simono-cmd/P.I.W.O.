@@ -80,7 +80,7 @@ class StudentService:
     def generate_grades_report(session: SessionLocal, student_id: int):
         student = StudentService.get_student(session, student_id)
         filename = "Grades.xlsx"
-        reports_folder = "../Reports"
+        reports_folder = Path("../Reports")
         student_folder = reports_folder / f"Student_{student_id}_{student.name}_{student.surname}"
         reports_folder.mkdir(parents=True, exist_ok=True)
         student_folder.mkdir(parents=True, exist_ok=True)
@@ -164,7 +164,7 @@ class StudentService:
 
         student = StudentService.get_student(session, student_id)
         filename = "Attendances.xlsx"
-        reports_folder = "../Reports"
+        reports_folder = Path("../Reports")
         student_folder = reports_folder / f"Student_{student_id}_{student.name}_{student.surname}"
         reports_folder.mkdir(parents=True, exist_ok=True)
         student_folder.mkdir(parents=True, exist_ok=True)
@@ -204,8 +204,7 @@ class StudentService:
     @staticmethod
     def generate_statistics_for_student(session: SessionLocal, student_id: int):
         student = StudentService.get_student(session, student_id)
-        statistics_folder = "../Statistics"
-        statistics_folder = Path(statistics_folder)
+        statistics_folder = Path("../Statistics")
         try:
             shutil.rmtree(statistics_folder)
         except FileNotFoundError:
@@ -214,17 +213,9 @@ class StudentService:
         full_path = statistics_folder
 
         grades = session.query(Subject.name, func.avg(Grade.worth)).select_from(Grade).join(Subject, Subject.id == Grade.subject_id).join(Student, Student.id == Grade.student_id).filter(Grade.student_id == student_id).group_by(Subject.name).all()
-
         subject_count = session.query(func.count(func.distinct(Attendance.subject_id))).filter(Attendance.student_id == student_id).scalar()
-        if subject_count != 0:
-            attendences = session.query(Attendance.status, func.count(Attendance.status) / subject_count).filter(Attendance.student_id == student_id).group_by(Attendance.status).all()
-        else :
-            attendences = []
-
-        if subject_count != 0:
-            failure_percentage = session.query(func.count(Failure.student_id)).filter(Failure.student_id == student_id).scalar() / subject_count * 100
-        else:
-            failure_percentage = 0
+        attendences = session.query(Attendance.status, func.count(Attendance.status) / subject_count).filter(Attendance.student_id == student_id).group_by(Attendance.status).all()
+        failure_percentage = session.query(func.count(Failure.student_id)).filter(Failure.student_id == student_id).scalar() / subject_count * 100
 
         if grades:
             subjects, avg_grades = zip(*grades)
@@ -234,6 +225,14 @@ class StudentService:
             plt.xlabel('Subjects')
             plt.ylabel('Average Grade')
             plt.xticks(rotation=45)
+            plt.tight_layout()
+            plt.savefig(full_path / "grades.png")
+            plt.close()
+        else:
+            plt.figure(figsize=(8, 5))
+            plt.title(f'{student.name} {student.surname} Average Grades')
+            plt.text(0.5, 0.5, 'No grade data available', ha='center', va='center', fontsize=12)
+            plt.axis('off')
             plt.tight_layout()
             plt.savefig(full_path / "grades.png")
             plt.close()
@@ -248,23 +247,30 @@ class StudentService:
             plt.tight_layout()
             plt.savefig(full_path / "attendances.png")
             plt.close()
-
-            passed_percentage = 100 - failure_percentage
-            labels = ['Failed Subjects', 'Passed Subjects']
-            sizes = [failure_percentage, passed_percentage]
-            colors = ['salmon', 'lightgreen']
-            plt.figure(figsize=(6, 6))
-            plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
-            plt.title(f'{student.name} {student.surname} Failure Rate')
-            plt.axis('equal')
+        else:
+            plt.figure(figsize=(8, 5))
+            plt.title(f'{student.name} {student.surname} Attendance Distribution')
+            plt.text(0.5, 0.5, 'No attendance data available', ha='center', va='center', fontsize=12)
+            plt.axis('off')
             plt.tight_layout()
-            plt.savefig(full_path / "passed.png")
+            plt.savefig(full_path / "attendances.png")
             plt.close()
+
+        passed_percentage = 100 - failure_percentage
+        labels = ['Failed Subjects', 'Passed Subjects']
+        sizes = [failure_percentage, passed_percentage]
+        colors = ['salmon', 'lightgreen']
+        plt.figure(figsize=(6, 6))
+        plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+        plt.title(f'{student.name} {student.surname} Failure Rate')
+        plt.axis('equal')
+        plt.tight_layout()
+        plt.savefig(full_path / "passed.png")
+        plt.close()
 
     @staticmethod
     def generate_statistics_for_everyone(session: SessionLocal):
-        statistics_folder = "../Statistics"
-        statistics_folder = Path(statistics_folder)
+        statistics_folder = Path("../Statistics")
         try:
             shutil.rmtree(statistics_folder)
         except FileNotFoundError:
