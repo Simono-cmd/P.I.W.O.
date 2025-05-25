@@ -23,19 +23,19 @@ class StudentService:
 
     @staticmethod
     def edit_student(session: SessionLocal, student_id: int, name: str = None,
-                     surname: str = None, pesel: str = None):
+                     surname: str = None, pesel: str = None) -> None:
         StudentRepository.edit_student(session, student_id, name, surname, pesel)
 
     @staticmethod
-    def delete_student(session: SessionLocal, student_id: int):
+    def delete_student(session: SessionLocal, student_id: int) -> None:
         StudentRepository.delete_student(session, student_id)
 
     @staticmethod
-    def get_student(session: SessionLocal, student_id: int):
+    def get_student(session: SessionLocal, student_id: int) -> Student:
         return StudentRepository.get_student(session, student_id)
 
     @staticmethod
-    def get_student_attendances_from_subject(session: SessionLocal, student_id: int, subject_id: int):
+    def get_student_attendances_from_subject(session: SessionLocal, student_id: int, subject_id: int) -> list[Attendance]:
         return session.query(Attendance).filter_by(
             student_id=student_id,
             subject_id=subject_id
@@ -43,7 +43,7 @@ class StudentService:
 
 
     @staticmethod
-    def get_student_grades_from_subject(session: SessionLocal, student_id: int, subject_id: int):
+    def get_student_grades_from_subject(session: SessionLocal, student_id: int, subject_id: int) -> list[Grade]:
         return session.query(Grade).filter_by(
             student_id=student_id,
             subject_id=subject_id
@@ -77,7 +77,7 @@ class StudentService:
         return round(average, 2)
 
     @staticmethod
-    def generate_grades_report(session: SessionLocal, student_id: int):
+    def generate_grades_report(session: SessionLocal, student_id: int) -> None:
         student = StudentService.get_student(session, student_id)
         filename = "Grades.xlsx"
         reports_folder = Path("../Reports")
@@ -160,7 +160,7 @@ class StudentService:
 
 
     @staticmethod
-    def generate_attendance_report(session: SessionLocal, student_id: int):
+    def generate_attendance_report(session: SessionLocal, student_id: int) -> None:
 
         student = StudentService.get_student(session, student_id)
         filename = "Attendances.xlsx"
@@ -202,7 +202,7 @@ class StudentService:
 
 
     @staticmethod
-    def generate_statistics_for_student(session: SessionLocal, student_id: int):
+    def generate_statistics_for_student(session: SessionLocal, student_id: int) -> None:
         student = StudentService.get_student(session, student_id)
         statistics_folder = Path("../Statistics")
         try:
@@ -269,7 +269,7 @@ class StudentService:
         plt.close()
 
     @staticmethod
-    def generate_statistics_for_everyone(session: SessionLocal):
+    def generate_statistics_for_everyone(session: SessionLocal) -> None:
         statistics_folder = Path("../Statistics")
         try:
             shutil.rmtree(statistics_folder)
@@ -334,7 +334,7 @@ class StudentService:
         plt.close()
 
     @staticmethod
-    def get_student_by_pesel(session, pesel: str):
+    def get_student_by_pesel(session, pesel: str) -> Student:
         return session.query(Student).filter_by(pesel=pesel).first()
 
 

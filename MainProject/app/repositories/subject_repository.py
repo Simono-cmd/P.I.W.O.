@@ -14,14 +14,14 @@ class SubjectRepository:
         return subject.id
 
     @staticmethod
-    def delete_subject(session: SessionLocal, subject_id: int):
+    def delete_subject(session: SessionLocal, subject_id: int) -> None:
         subject = session.query(Subject).get(subject_id)
         session.delete(subject)
         session.flush()
 
 
     @staticmethod
-    def edit_subject(session: SessionLocal, subject_id: int, name: str = None):
+    def edit_subject(session: SessionLocal, subject_id: int, name: str = None) -> None:
         subject = session.query(Subject).get(subject_id)
         if subject is None:
             raise NoResultFound("Subject with id {} not found".format(subject_id))
@@ -31,27 +31,27 @@ class SubjectRepository:
 
 
     @staticmethod
-    def get_subject(session: SessionLocal, subject_id: int):
+    def get_subject(session: SessionLocal, subject_id: int) -> Subject:
         subject = session.query(Subject).get(subject_id)
         if subject is None:
             raise NoResultFound("Subject with id {} not found".format(subject_id))
         return subject
 
     @staticmethod
-    def delete_subject_name(session: SessionLocal, subject_name: str):
+    def delete_subject_name(session: SessionLocal, subject_name: str) -> None:
         subject = session.query(Subject).get(subject_name)
         session.delete(subject)
         session.flush()
 
     @staticmethod
-    def get_students_enrolled_in_subject(session: SessionLocal, subject_name: int):
+    def get_students_enrolled_in_subject(session: SessionLocal, subject_name: str) -> list[Student]:
         return session.query(Student) \
             .select_from(Attendance) \
             .join(Subject, Subject.id == Attendance.subject_id) \
             .join(Student, Student.id == Attendance.student_id) \
-            .filter(Subject.name == subject_name and Attendance.subject_id == Subject.id) \
+            .filter(Subject.name == subject_name, Attendance.subject_id == Subject.id) \
             .all()
 
     @staticmethod
-    def find_subject_id_by_name(session: SessionLocal, subject_name: str):
+    def find_subject_id_by_name(session: SessionLocal, subject_name: str) -> int:
         return session.query(Subject.id).filter(Subject.name == subject_name).scalar()

@@ -1,11 +1,11 @@
 from customtkinter import *
 from tkinter import messagebox
-from psycopg2 import IntegrityError
+from MainProject.app.database.database import SessionLocal
 from MainProject.app.services.subject_service import SubjectService
 from MainProject.app.gui.tool_tip import ToolTip
 
 class EditSubjectsWindow(CTkToplevel):
-    def __init__(self, parent, session):
+    def __init__(self, parent: CTk, session: SessionLocal) -> None:
         super().__init__(parent)
         self.session = session
         self.title("Edit Subjects")
@@ -42,7 +42,7 @@ class EditSubjectsWindow(CTkToplevel):
 
         self.refresh_subjects()
 
-    def refresh_subjects(self):
+    def refresh_subjects(self) -> None:
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
 
@@ -57,7 +57,7 @@ class EditSubjectsWindow(CTkToplevel):
 
         self.selected_subject.set(0)
 
-    def rename_subject(self):
+    def rename_subject(self) -> None:
         selected_id = self.selected_subject.get()
         new_name = self.name_entry.get().strip()
         if not selected_id:
@@ -76,7 +76,7 @@ class EditSubjectsWindow(CTkToplevel):
             self.session.rollback()
             messagebox.showerror("Error", str(e))
 
-    def delete_subject(self):
+    def delete_subject(self) -> None:
         selected = self.selected_subject.get()
         if not selected:
             messagebox.showwarning("Error", "Choose the subject")
@@ -104,7 +104,7 @@ class EditSubjectsWindow(CTkToplevel):
             self.session.rollback()
             messagebox.showerror("Error", str(e))
 
-    def add_subject(self):
+    def add_subject(self) -> None:
         name = self.name_entry.get().strip()
         if not name:
             messagebox.showwarning("Error", "Enter subject name")

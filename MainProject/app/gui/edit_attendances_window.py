@@ -1,10 +1,12 @@
 import calendar
+import tkinter
 from datetime import datetime, date
 import tkinter as tk
 from tkinter import messagebox
 from customtkinter import *
+
+from MainProject.app.database.database import SessionLocal
 from MainProject.app.services.attendance_service import AttendanceService
-from MainProject.app.services.failure_service import FailureService
 from MainProject.app.services.subject_service import SubjectService
 from MainProject.app.models.attendance import Attendance
 
@@ -22,7 +24,7 @@ class EditAttendancesWindow(CTkToplevel):
         "July", "August", "September", "October", "November", "December"
     ]
 
-    def __init__(self, parent, session, student_id, subject_name):
+    def __init__(self, parent: CTk, session: SessionLocal, student_id: int, subject_name: str) -> None:
         super().__init__(parent)
         self.session = session
         self.student_id = student_id
@@ -44,7 +46,7 @@ class EditAttendancesWindow(CTkToplevel):
         self.build_ui()
         self.draw_calendar()
 
-    def build_ui(self):
+    def build_ui(self) -> None:
         top_frame = CTkFrame(self)
         top_frame.pack(pady=10)
 
@@ -81,7 +83,7 @@ class EditAttendancesWindow(CTkToplevel):
         for i, btn in enumerate(self.status_buttons.values()):
             btn.grid(row=0, column=i, padx=10)
 
-    def draw_calendar(self):
+    def draw_calendar(self) -> None:
         for widget in self.calendar_frame.winfo_children():
             widget.destroy()
 
@@ -126,7 +128,7 @@ class EditAttendancesWindow(CTkToplevel):
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
-    def get_status_color(self, day_date):
+    def get_status_color(self, day_date: datetime) -> str:
         attendance = self.session.query(Attendance).filter_by(
             student_id=self.student_id,
             subject_id=self.subject_id,
@@ -136,7 +138,7 @@ class EditAttendancesWindow(CTkToplevel):
             return self.STATUS_COLORS[attendance.status]
         return None
 
-    def on_day_click(self, day_date):
+    def on_day_click(self, day_date: datetime) -> None:
         self.selected_date = day_date
         if not self.selected_status:
             messagebox.showwarning("Warning", "Please select attendance status first.")
@@ -153,9 +155,10 @@ class EditAttendancesWindow(CTkToplevel):
 
             if existing:
                 AttendanceService.edit_attendance(self.session, existing.id, status=self.selected_status)
-                FailureService.evaluate_student_risk(self.session, student_id=self.student_id, subject_id=self.subject_id)
+                self.session.commit()
             else:
                 AttendanceService.add_attendance(self.session,self.student_id,self.subject_id,self.selected_status,dt_date)
+                self.session.commit()
 
             color = self.get_status_color(day_date)
             btn = self.day_buttons.get(day_date)
@@ -166,7 +169,7 @@ class EditAttendancesWindow(CTkToplevel):
             self.session.rollback()
             messagebox.showerror("Error", str(e))
 
-    def set_status(self, status):
+    def set_status(self, status: str) -> None:
         self.selected_status = status
         for name, btn in self.status_buttons.items():
             if name == status:
@@ -174,7 +177,7 @@ class EditAttendancesWindow(CTkToplevel):
             else:
                 btn.configure(border_width=0)
 
-    def on_right_click(self, event, day_date):
+    def on_right_click(self, event: tkinter.Event, day_date: datetime) -> None:
         try:
             existing = self.session.query(Attendance).filter_by(
                 student_id=self.student_id,
@@ -183,7 +186,7 @@ class EditAttendancesWindow(CTkToplevel):
             ).first()
 
             if existing:
-                self.session.delete(existing)
+                AttendanceService.delete_attendance(self.session, existing.id)
                 self.session.commit()
                 btn = self.day_buttons.get(day_date)
                 if btn:

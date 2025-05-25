@@ -14,7 +14,7 @@ class GradeRepository:
 
 
     @staticmethod
-    def edit_grade(session: SessionLocal, grade_id: int, student_id: int = None, subject_id: int = None, form: str = None, worth: int = None) :
+    def edit_grade(session: SessionLocal, grade_id: int, student_id: int = None, subject_id: int = None, form: str = None, worth: int = None) -> None:
         grade = session.query(Grade).get(grade_id)
         if grade is None:
             raise NoResultFound("Grade with id {} not found".format(grade_id))
@@ -27,7 +27,7 @@ class GradeRepository:
 
 
     @staticmethod
-    def delete_grade(session: SessionLocal, grade_id: int):
+    def delete_grade(session: SessionLocal, grade_id: int) -> None:
         grade = session.query(Grade).get(grade_id)
         if grade is None:
             raise NoResultFound("Grade with id {} not found".format(grade_id))

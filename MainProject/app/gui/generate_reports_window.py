@@ -2,8 +2,11 @@ from customtkinter import CTk, CTkToplevel, CTkFrame, CTkLabel
 from PIL import Image, ImageTk
 import os
 
+from sqlalchemy.orm import Session
+
+
 class ReportWindow(CTkToplevel):
-    def __init__(self, parent, session):
+    def __init__(self, parent : CTk, session : Session) -> None:
         super().__init__(parent)
         self.session = session
         self.title("Reports")

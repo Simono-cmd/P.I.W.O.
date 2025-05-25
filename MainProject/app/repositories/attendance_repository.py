@@ -15,7 +15,7 @@ class AttendanceRepository:
 
     @staticmethod
     def edit_attendance(session: SessionLocal, attendance_id: int, student_id: int = None, subject_id: int = None, status: str = None,
-                        date_of: datetime = None):
+                        date_of: datetime = None) -> None:
             attendance = session.query(Attendance).get(attendance_id)
             if attendance is None:
                 raise NoResultFound("Attendance with id {} not found".format(attendance_id))
@@ -28,7 +28,7 @@ class AttendanceRepository:
 
 
     @staticmethod
-    def delete_attendance(session: SessionLocal, attendance_id: int):
+    def delete_attendance(session: SessionLocal, attendance_id: int) -> None:
 
         attendance = session.query(Attendance).get(attendance_id)
         if attendance is None:
@@ -39,7 +39,7 @@ class AttendanceRepository:
 
 
     @staticmethod
-    def get_attendance(session: SessionLocal, attendance_id: int):
+    def get_attendance(session: SessionLocal, attendance_id: int) -> Attendance:
         attendance = session.query(Attendance).get(attendance_id)
         if attendance is None:
             raise NoResultFound("Attendance with id {} not found".format(attendance_id))

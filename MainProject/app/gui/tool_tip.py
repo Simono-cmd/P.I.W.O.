@@ -1,14 +1,14 @@
 import tkinter as tk
 
 class ToolTip:
-    def __init__(self, widget, text):
+    def __init__(self, widget : tk.Widget, text : str) -> None:
         self.widget = widget
         self.text = text
         self.tip_window = None
         self.widget.bind("<Enter>", self.show_tip)
         self.widget.bind("<Leave>", self.hide_tip)
 
-    def show_tip(self, event=None):
+    def show_tip(self, event: tk.Event = None) -> None:
         if self.tip_window or not self.text:
             return
         x = self.widget.winfo_rootx() + 20
@@ -24,7 +24,7 @@ class ToolTip:
         )
         label.pack(ipadx=4, ipady=2)
 
-    def hide_tip(self, event=None):
+    def hide_tip(self, event : tk.Event =None) -> None:
         if self.tip_window:
             self.tip_window.destroy()
             self.tip_window = None

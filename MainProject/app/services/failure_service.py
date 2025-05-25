@@ -7,7 +7,7 @@ class FailureService:
 
 
     @staticmethod
-    def evaluate_student_risk(session: SessionLocal, student_id: int, subject_id: int):
+    def evaluate_student_risk(session: SessionLocal, student_id: int, subject_id: int) -> None:
         grades = StudentService.get_student_grades_from_subject(session, student_id, subject_id)
         attendances = StudentService.get_student_attendances_from_subject(session, student_id, subject_id)
 

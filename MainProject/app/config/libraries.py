@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-def check_and_install(package):
+def check_and_install(package : str) -> None:
     try:
         __import__(package)
         print(f"{package} jest już zainstalowane.")

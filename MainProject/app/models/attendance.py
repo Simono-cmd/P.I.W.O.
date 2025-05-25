@@ -15,7 +15,6 @@ class Attendance(Base):
     possible_status_values = ["present", "late", "excused", "absent"]
 
     # Validations
-
     @validates('id', 'student_id', 'subject_id')
     def validate_ids(self, key, value):
         if value is not None and value < 0:

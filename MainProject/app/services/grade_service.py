@@ -15,14 +15,14 @@ class GradeService:
 
     @staticmethod
     def edit_grade(session: SessionLocal, grade_id: int, student_id: int = None,
-                   subject_id: int = None, form: str = None, worth: int = None):
+                   subject_id: int = None, form: str = None, worth: int = None) -> None:
         if form: form = form.lower()
         GradeRepository.edit_grade(session, grade_id, student_id, subject_id, form, worth)
         grade = GradeRepository.get_grade(session, grade_id)
         FailureService.evaluate_student_risk(session, grade.student_id, grade.subject_id)
 
     @staticmethod
-    def delete_grade(session: SessionLocal, grade_id: int):
+    def delete_grade(session: SessionLocal, grade_id: int) -> None:
         grade = session.query(Grade).get(grade_id)
         GradeRepository.delete_grade(session, grade_id)
         FailureService.evaluate_student_risk(session, grade.student_id, grade.subject_id)

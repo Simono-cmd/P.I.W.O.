@@ -16,7 +16,7 @@ class StudentRepository:
 
 
     @staticmethod
-    def edit_student(session: SessionLocal, student_id: int, name: str = None, surname: str = None, pesel: str = None):
+    def edit_student(session: SessionLocal, student_id: int, name: str = None, surname: str = None, pesel: str = None) -> None:
             student = session.query(Student).get(student_id)
             if not student:
                 raise NoResultFound(f"Student with id {student_id} not found")
@@ -27,7 +27,7 @@ class StudentRepository:
             session.flush()
 
     @staticmethod
-    def delete_student(session: SessionLocal, student_id: int):
+    def delete_student(session: SessionLocal, student_id: int) -> None:
         student = session.query(Student).get(student_id)
         if not student:
             raise NoResultFound(f"Student with id {student_id} not found")
@@ -36,7 +36,7 @@ class StudentRepository:
         session.flush()
 
     @staticmethod
-    def get_student(session: SessionLocal, student_id: int):
+    def get_student(session: SessionLocal, student_id: int) -> Student:
         student = session.query(Student).get(student_id)
         if not student:
             raise NoResultFound(f"Student with id {student_id} not found")

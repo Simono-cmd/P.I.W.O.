@@ -18,24 +18,24 @@ class AttendanceService:
     def edit_attendance(session: SessionLocal, attendance_id: int,
                         student_id: int = None, subject_id: int = None,
                         status: str = None,
-                        date_of: datetime = None):
+                        date_of: datetime = None) -> None:
         if status: status = status.lower()
         AttendanceRepository.edit_attendance(session, attendance_id, student_id, subject_id, status, date_of)
 
     @staticmethod
-    def delete_attendance(session: SessionLocal, attendance_id: int):
+    def delete_attendance(session: SessionLocal, attendance_id: int) -> None:
         attendance = AttendanceRepository.get_attendance(session, attendance_id)
         AttendanceRepository.delete_attendance(session, attendance_id)
         FailureService.evaluate_student_risk(session, attendance.student_id, attendance.subject_id)
 
     @staticmethod
-    def get_attendance(session: SessionLocal, attendance_id: int):
+    def get_attendance(session: SessionLocal, attendance_id: int) -> Attendance:
         attendance = AttendanceRepository.get_attendance(session, attendance_id)
         return attendance
 
 
     @staticmethod
-    def get_attendance_for_subject_on_date(session: SessionLocal, subject_id: int, target_date: date):
+    def get_attendance_for_subject_on_date(session: SessionLocal, subject_id: int, target_date: date) -> list:
         attendances = session.query(Attendance).filter(
             Attendance.subject_id == subject_id,
             Attendance.date == target_date

@@ -16,7 +16,7 @@ from MainProject.app.services.subject_service import SubjectService
 
 
 class MainWindow(CTk):
-    def __init__(self, session: SessionLocal):
+    def __init__(self, session: SessionLocal) -> None:
         # conf
         super().__init__()
         self.sessionL = session
@@ -55,7 +55,7 @@ class MainWindow(CTk):
 
         self.add_choose_subject_option()
 
-    def add_choose_subject_option(self):
+    def add_choose_subject_option(self) -> None:
         subject = StringVar()
         subject_objects = SubjectService.get_all_subjects(self.sessionL)
         subject_names = [subject.name if hasattr(subject, "name") else subject for subject in subject_objects]
@@ -82,7 +82,7 @@ class MainWindow(CTk):
         )
         edit_subject_button.grid(row=0, column=2, padx=5)
 
-    def add_students_list(self, subject: str):
+    def add_students_list(self, subject: str) -> None:
         self.selected_subject = subject
         for widget in self.list_frame.winfo_children():
             widget.destroy()
@@ -114,7 +114,7 @@ class MainWindow(CTk):
         self.add_grades_and_attendance_button()
         self.add_report_button()
 
-    def add_buttons_to_list(self):
+    def add_buttons_to_list(self) -> None:
         for widget in self.list_frame_buttons.winfo_children():
             widget.destroy()
 
@@ -148,7 +148,7 @@ class MainWindow(CTk):
         delete_button = CTkButton(self.list_frame_buttons, text="Delete",command=self.delete_student, fg_color="#b30415", hover_color="#57030c")
         delete_button.pack(side="top", pady=10)
 
-    def select_student(self, student_id: int, label_widget: CTkLabel):
+    def select_student(self, student_id: int, label_widget: CTkLabel) -> None:
         for lbl in self.students_labels:
             lbl.configure(fg_color="transparent")
 
@@ -167,7 +167,7 @@ class MainWindow(CTk):
         self.pesel_entry.insert(0, student.pesel)
 
 
-    def add_grades_and_attendance_button(self):
+    def add_grades_and_attendance_button(self) -> None:
         for widget in self.grades_and_attendance_frame.winfo_children():
             widget.destroy()
 
@@ -177,7 +177,7 @@ class MainWindow(CTk):
         attendance_button = CTkButton(self.grades_and_attendance_frame, text="Attendance", width=80, height=40, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=self.open_attendance_edit_window)
         attendance_button.pack(side="left", padx=(10, 0), fill="x", expand=True)
 
-    def add_report_button(self):
+    def add_report_button(self) -> None:
         for widget in self.report_buttons_frame.winfo_children():
             widget.destroy()
 
@@ -197,7 +197,7 @@ class MainWindow(CTk):
         self.mainloop()
         self.sessionL.close()
 
-    def open_subject_edit_window(self, subject_combo):
+    def open_subject_edit_window(self, subject_combo) -> None:
         edit_window = EditSubjectsWindow(self, self.sessionL)
         self.wait_window(edit_window)
 
@@ -211,7 +211,7 @@ class MainWindow(CTk):
             self.add_students_list(subject_names[0])
 
 
-    def open_grade_edit_window(self):
+    def open_grade_edit_window(self) -> None:
         if not self.selected_student:
             messagebox.showwarning("Warning", "Please select a student from the list.")
             return
@@ -220,7 +220,7 @@ class MainWindow(CTk):
         self.refresh_students()
 
 
-    def open_attendance_edit_window(self):
+    def open_attendance_edit_window(self) -> None:
         if not self.selected_student:
             messagebox.showwarning("Warning", "Please select a student from the list.")
             return
@@ -231,7 +231,7 @@ class MainWindow(CTk):
 
 
 
-    def rename_student(self):
+    def rename_student(self) -> None:
         selected_id = self.selected_student
         new_name = self.name_entry.get().strip()
         new_surname = self.surname_entry.get().strip()
@@ -254,7 +254,7 @@ class MainWindow(CTk):
             self.sessionL.rollback()
             messagebox.showerror("Error", str(e))
 
-    def delete_student(self):
+    def delete_student(self) -> None:
         selected = self.selected_student
         if not selected:
             messagebox.showwarning("Error", "Choose the student")
@@ -282,7 +282,7 @@ class MainWindow(CTk):
             self.sessionL.rollback()
             messagebox.showerror("Error", str(e))
 
-    def add_student(self):
+    def add_student(self) -> None:
         imie = self.name_entry.get().strip()
         nazwisko = self.surname_entry.get().strip()
         pesel = self.pesel_entry.get().strip()
@@ -316,10 +316,10 @@ class MainWindow(CTk):
         messagebox.showinfo("Success", f"Student '{imie} {nazwisko}' added succesfully")
         self.refresh_students()
 
-    def refresh_students(self):
+    def refresh_students(self) -> None:
         self.add_students_list(self.selected_subject)
 
-    def generate_grades_report_for_student(self, session: SessionLocal, student_id: int):
+    def generate_grades_report_for_student(self, session: SessionLocal, student_id: int) -> None:
         if student_id is None:
             messagebox.showerror("Error", "Please select a student first.")
             return
@@ -327,7 +327,7 @@ class MainWindow(CTk):
         StudentService.generate_grades_report(session, student_id)
         messagebox.showinfo("Success", "Grades report generated succesfully. Check /Reports folder")
 
-    def generate_attendance_report_for_student(self, session: SessionLocal, student_id: int):
+    def generate_attendance_report_for_student(self, session: SessionLocal, student_id: int) -> None:
         if student_id is None:
             messagebox.showerror("Error", "Please select a student first.")
             return
@@ -336,13 +336,13 @@ class MainWindow(CTk):
         messagebox.showinfo("Success", "Attendance report generated succesfully. Check /Reports folder")
 
 
-    def open_statistics_for_student(self, student_id: int):
+    def open_statistics_for_student(self, student_id: int) -> None:
         if student_id is None:
             messagebox.showerror("Error", "Please select a student first.")
             return
         StudentService.generate_statistics_for_student(self.sessionL, student_id)
         report_window = ReportWindow(self, self.sessionL)
 
-    def open_statistics_for_everyone(self):
+    def open_statistics_for_everyone(self) -> None:
         StudentService.generate_statistics_for_everyone(self.sessionL)
         report_window = ReportWindow(self, self.sessionL)
