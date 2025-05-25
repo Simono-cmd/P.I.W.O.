@@ -1,9 +1,9 @@
 
-from app.database.database import SessionLocal
-from app.gui.main_window import MainWindow
-from app.models import Grade
-from app.services.grade_service import GradeService
-from app.services.student_service import StudentService
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.gui.main_window import MainWindow
+from MainProject.app.models import Grade
+from MainProject.app.services.grade_service import GradeService
+from MainProject.app.services.student_service import StudentService
 
 session = SessionLocal()
 
