@@ -22,7 +22,6 @@ try:
     print("\033[92mrunning")
     app = MainWindow(session)
     app.run()
-    session.close()
 finally:
     session.commit()
     session.close()
