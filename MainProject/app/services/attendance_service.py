@@ -1,11 +1,8 @@
-
 from datetime import datetime, date
-
 from sqlalchemy.orm import joinedload
-
-from app.database.database import SessionLocal
-from app.models.attendance import Attendance
-from app.repositories.attendance_repository import AttendanceRepository
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models.attendance import Attendance
+from MainProject.app.repositories.attendance_repository import AttendanceRepository
 
 
 class AttendanceService:

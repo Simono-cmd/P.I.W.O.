@@ -1,6 +1,6 @@
-from app.database.database import SessionLocal
-from app.models.failure import Failure
-from app.services.student_service import StudentService
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models.failure import Failure
+from MainProject.app.services.student_service import StudentService
 
 
 class FailureService:

@@ -1,6 +1,6 @@
-from app.database.database import SessionLocal
-from app.models import Subject, Student, Attendance
-from app.repositories.subject_repository import SubjectRepository
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models import Subject, Student, Attendance
+from MainProject.app.repositories.subject_repository import SubjectRepository
 
 class SubjectService:
 

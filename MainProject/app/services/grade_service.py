@@ -1,7 +1,7 @@
-from app.database.database import SessionLocal
-from app.models.grade import Grade
-from app.repositories.grade_repository import GradeRepository
-from app.services.failure_service import FailureService
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models.grade import Grade
+from MainProject.app.repositories.grade_repository import GradeRepository
+from MainProject.app.services.failure_service import FailureService
 
 
 class GradeService:

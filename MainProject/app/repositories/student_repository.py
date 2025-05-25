@@ -1,7 +1,6 @@
 from sqlalchemy.exc import NoResultFound
-
-from app.database.database import SessionLocal
-from app.models.student import Student
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models.student import Student
 
 
 class StudentRepository:

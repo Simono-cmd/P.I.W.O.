@@ -1,10 +1,10 @@
 import pytest
 from sqlalchemy.exc import NoResultFound
 
-from app.database.database import SessionLocal
-from app.repositories.grade_repository import GradeRepository
-from app.repositories.student_repository import StudentRepository
-from app.repositories.subject_repository import SubjectRepository
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.repositories.grade_repository import GradeRepository
+from MainProject.app.repositories.student_repository import StudentRepository
+from MainProject.app.repositories.subject_repository import SubjectRepository
 
 
 def test_grade_repository():

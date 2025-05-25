@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship, validates
-from app.database.database import Base
+from MainProject.app.database.database import Base
 
 class Failure(Base):
     __tablename__ = 'failures'

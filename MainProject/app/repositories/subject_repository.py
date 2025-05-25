@@ -1,7 +1,7 @@
 from sqlalchemy.exc import NoResultFound
-from app.database.database import SessionLocal
-from app.models import Student, Attendance
-from app.models.subject import Subject
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models import Student, Attendance
+from MainProject.app.models.subject import Subject
 
 
 class SubjectRepository:

@@ -4,12 +4,12 @@ from pathlib import Path
 from openpyxl.styles import Font, PatternFill
 from sqlalchemy import func, cast, Float
 from sqlalchemy.exc import NoResultFound
-from app.database.database import SessionLocal
-from app.models import Subject, Student
-from app.models.attendance import Attendance
-from app.models.failure import Failure
-from app.models.grade import Grade
-from app.repositories.student_repository import StudentRepository
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models import Subject, Student
+from MainProject.app.models.attendance import Attendance
+from MainProject.app.models.failure import Failure
+from MainProject.app.models.grade import Grade
+from MainProject.app.repositories.student_repository import StudentRepository
 import openpyxl
 from openpyxl.drawing.image import Image
 import matplotlib.pyplot as plt

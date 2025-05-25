@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database.database import Base
+from MainProject.app.database.database import Base
 from sqlalchemy.orm import validates
 
 class Grade(Base):

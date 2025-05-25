@@ -1,15 +1,11 @@
 import calendar
-import os
 from datetime import datetime, date
-
 import tkinter as tk
 from tkinter import messagebox
-
 from customtkinter import *
-
-from app.services.attendance_service import AttendanceService
-from app.services.subject_service import SubjectService
-from app.models.attendance import Attendance
+from MainProject.app.services.attendance_service import AttendanceService
+from MainProject.app.services.subject_service import SubjectService
+from MainProject.app.models.attendance import Attendance
 
 
 class EditAttendancesWindow(CTkToplevel):

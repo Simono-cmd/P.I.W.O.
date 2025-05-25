@@ -3,15 +3,15 @@ import tkinter as tk
 from customtkinter import *
 from tkinter import messagebox
 from sqlalchemy.exc import IntegrityError
-from app.database.database import SessionLocal
-from app.gui.edit_attendances_window import EditAttendancesWindow
-from app.gui.edit_grades_window import EditGradesWindow
-from app.gui.edit_subjects_window import EditSubjectsWindow
-from app.gui.generate_reports_window import ReportWindow
-from app.gui.tool_tip import ToolTip
-from app.services.attendance_service import AttendanceService
-from app.services.student_service import StudentService
-from app.services.subject_service import SubjectService
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.gui.edit_attendances_window import EditAttendancesWindow
+from MainProject.app.gui.edit_grades_window import EditGradesWindow
+from MainProject.app.gui.edit_subjects_window import EditSubjectsWindow
+from MainProject.app.gui.generate_reports_window import ReportWindow
+from MainProject.app.gui.tool_tip import ToolTip
+from MainProject.app.services.attendance_service import AttendanceService
+from MainProject.app.services.student_service import StudentService
+from MainProject.app.services.subject_service import SubjectService
 
 
 class MainWindow(CTk):

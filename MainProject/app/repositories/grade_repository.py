@@ -1,5 +1,5 @@
-from app.database.database import SessionLocal
-from app.models.grade import Grade
+from MainProject.app.database.database import SessionLocal
+from MainProject.app.models.grade import Grade
 from sqlalchemy.exc import NoResultFound
 
 

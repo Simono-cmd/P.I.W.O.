@@ -1,8 +1,8 @@
 from customtkinter import *
 from tkinter import messagebox
 from psycopg2 import IntegrityError
-from app.services.subject_service import SubjectService
-from app.gui.tool_tip import ToolTip
+from MainProject.app.services.subject_service import SubjectService
+from MainProject.app.gui.tool_tip import ToolTip
 
 class EditSubjectsWindow(CTkToplevel):
     def __init__(self, parent, session):

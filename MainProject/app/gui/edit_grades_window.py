@@ -1,13 +1,10 @@
-
 import tkinter as tk
 from tkinter import messagebox
-
 from customtkinter import *
-
-from app.gui.tool_tip import ToolTip
-from app.services.grade_service import GradeService
-from app.models.grade import Grade
-from app.services.subject_service import SubjectService
+from MainProject.app.gui.tool_tip import ToolTip
+from MainProject.app.services.grade_service import GradeService
+from MainProject.app.models.grade import Grade
+from MainProject.app.services.subject_service import SubjectService
 
 
 class EditGradesWindow(CTkToplevel):

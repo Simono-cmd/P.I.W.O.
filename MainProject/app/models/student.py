@@ -1,7 +1,7 @@
 import re
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
-from app.database.database import Base
+from MainProject.app.database.database import Base
 from sqlalchemy.orm import validates
 
 class Student(Base):
