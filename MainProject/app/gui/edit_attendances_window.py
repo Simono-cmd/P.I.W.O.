@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 from customtkinter import *
 from MainProject.app.services.attendance_service import AttendanceService
+from MainProject.app.services.failure_service import FailureService
 from MainProject.app.services.subject_service import SubjectService
 from MainProject.app.models.attendance import Attendance
 
@@ -31,6 +32,7 @@ class EditAttendancesWindow(CTkToplevel):
         self.title("Edit attendance")
         self.geometry("600x500")
         self.iconbitmap("gui/icons/editor.ico")
+        self.protocol("WM_DELETE_WINDOW", self.session.commit())
         self.grab_set()
         self.focus()
         self.resizable(False, False)
@@ -38,6 +40,7 @@ class EditAttendancesWindow(CTkToplevel):
         self.selected_status = None
         self.selected_date = datetime.today().date()
 
+        self.day_buttons = {}
         self.build_ui()
         self.draw_calendar()
 
@@ -103,8 +106,17 @@ class EditAttendancesWindow(CTkToplevel):
                     this_date = date(year, month, day)
                     color = self.get_status_color(this_date)
 
-                    btn = CTkButton(self.calendar_frame, text=str(day),fg_color=color or "gray20",command=lambda d=this_date: self.on_day_click(d),width=50, height=50)
+                    btn = CTkButton(
+                        self.calendar_frame,
+                        text=str(day),
+                        fg_color=color or "gray20",
+                        command=lambda d=this_date: self.on_day_click(d),
+                        width=50,
+                        height=50
+                    )
                     btn.grid(row=row, column=col, padx=2, pady=2)
+                    btn.bind("<Button-3>", lambda event, d=this_date: self.on_right_click(event, d)) 
+                    self.day_buttons[this_date] = btn
 
                 col += 1
                 if col > 6:
@@ -141,11 +153,14 @@ class EditAttendancesWindow(CTkToplevel):
 
             if existing:
                 AttendanceService.edit_attendance(self.session, existing.id, status=self.selected_status)
+                FailureService.evaluate_student_risk(self.session, student_id=self.student_id, subject_id=self.subject_id)
             else:
                 AttendanceService.add_attendance(self.session,self.student_id,self.subject_id,self.selected_status,dt_date)
 
-            self.session.commit()
-            self.draw_calendar()
+            color = self.get_status_color(day_date)
+            btn = self.day_buttons.get(day_date)
+            if btn:
+                btn.configure(fg_color=color or "gray20")
 
         except Exception as e:
             self.session.rollback()
@@ -158,3 +173,22 @@ class EditAttendancesWindow(CTkToplevel):
                 btn.configure(border_width=2, border_color="white")
             else:
                 btn.configure(border_width=0)
+
+    def on_right_click(self, event, day_date):
+        try:
+            existing = self.session.query(Attendance).filter_by(
+                student_id=self.student_id,
+                subject_id=self.subject_id,
+                date=day_date
+            ).first()
+
+            if existing:
+                self.session.delete(existing)
+                self.session.commit()
+                btn = self.day_buttons.get(day_date)
+                if btn:
+                    btn.configure(fg_color="gray20")
+        except Exception as e:
+            self.session.rollback()
+            messagebox.showerror("Error", str(e))
+

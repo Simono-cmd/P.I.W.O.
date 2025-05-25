@@ -112,13 +112,9 @@ class EditSubjectsWindow(CTkToplevel):
         try:
             SubjectService.add_subject(self.session, name)
             self.session.commit()
-        except IntegrityError:
-            self.session.rollback()
-            messagebox.showerror("Error", f"Subject '{name}' already exists.")
-            return
         except Exception as e:
             self.session.rollback()
-            messagebox.showerror("Error", str({e}))
+            messagebox.showerror("Error", str(e))
             return
 
         messagebox.showinfo("Success", f"Subject '{name}' added succesfully")

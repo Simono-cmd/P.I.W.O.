@@ -10,6 +10,7 @@ from MainProject.app.gui.edit_subjects_window import EditSubjectsWindow
 from MainProject.app.gui.generate_reports_window import ReportWindow
 from MainProject.app.gui.tool_tip import ToolTip
 from MainProject.app.services.attendance_service import AttendanceService
+from MainProject.app.services.failure_service import FailureService
 from MainProject.app.services.student_service import StudentService
 from MainProject.app.services.subject_service import SubjectService
 
@@ -95,11 +96,18 @@ class MainWindow(CTk):
 
         for student in self.students_enrolled:
             full_name = f"{student.name} {student.surname}"
-
             label = CTkLabel(self.scroll_frame, text=full_name, text_color="white", anchor="w", fg_color="transparent")
+
+            if FailureService.is_student_at_risk(self.sessionL, student.id,
+                                                        SubjectService.find_subject_id_by_name(self.sessionL,
+                                                                                               self.selected_subject)):
+                label.configure(text_color="red")
+            else:
+                label.configure(text_color="white")
+
             label.pack(fill="x", pady=5)
             label.bind("<Button-1>",
-                       lambda event, student_id=student.id, lbl=label: self.select_student(student_id, lbl))
+                        lambda event, student_id=student.id, lbl=label: self.select_student(student_id, lbl))
             self.students_labels.append(label)
 
         self.add_buttons_to_list()
@@ -173,16 +181,16 @@ class MainWindow(CTk):
         for widget in self.report_buttons_frame.winfo_children():
             widget.destroy()
 
-        report_everyone_button = CTkButton(self.report_buttons_frame, text="Generate student's grade report", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=lambda: self.generate_grades_report_for_student(self.sessionL, self.selected_student))
+        report_everyone_button = CTkButton(self.report_buttons_frame, text="Generate student's grade report", height=40, width=220, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=lambda: self.generate_grades_report_for_student(self.sessionL, self.selected_student))
         report_everyone_button.pack(pady=5, anchor="n")
 
-        report_student_button = CTkButton(self.report_buttons_frame, text="Generate student's attendance report", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=lambda: self.generate_attendance_report_for_student(self.sessionL, self.selected_student))
+        report_student_button = CTkButton(self.report_buttons_frame, text="Generate student's attendance report", height=40, width=220, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=lambda: self.generate_attendance_report_for_student(self.sessionL, self.selected_student))
         report_student_button.pack(pady=5, anchor="n")
 
-        statistics_everyone_button = CTkButton(self.report_buttons_frame, text="Generate general statistics",  height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=self.open_statistics_for_everyone)
+        statistics_everyone_button = CTkButton(self.report_buttons_frame, text="Generate general statistics",  height=40, width=220, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command=self.open_statistics_for_everyone)
         statistics_everyone_button.pack(pady=5, anchor="n")
 
-        statistics_student_button = CTkButton(self.report_buttons_frame, text="Generate statistics for student", height=40, width=200, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command= lambda: self.open_statistics_for_student(self.selected_student))
+        statistics_student_button = CTkButton(self.report_buttons_frame, text="Generate statistics for student", height=40, width=220, fg_color="#cccccc", hover_color="#8d8d8d", text_color="black", command= lambda: self.open_statistics_for_student(self.selected_student))
         statistics_student_button.pack(pady=5, anchor="n")
 
     def run(self):
@@ -209,6 +217,7 @@ class MainWindow(CTk):
             return
         edit_window = EditGradesWindow(self, self.sessionL, self.selected_student, self.selected_subject)
         self.wait_window(edit_window)
+        self.refresh_students()
 
 
     def open_attendance_edit_window(self):
@@ -217,6 +226,7 @@ class MainWindow(CTk):
             return
         edit_window = EditAttendancesWindow(self, self.sessionL, self.selected_student, self.selected_subject)
         self.wait_window(edit_window)
+        self.refresh_students()
 
 
 
@@ -315,6 +325,7 @@ class MainWindow(CTk):
             return
 
         StudentService.generate_grades_report(session, student_id)
+        messagebox.showinfo("Success", "Grades report generated succesfully. Check /Reports folder")
 
     def generate_attendance_report_for_student(self, session: SessionLocal, student_id: int):
         if student_id is None:
@@ -322,6 +333,8 @@ class MainWindow(CTk):
             return
 
         StudentService.generate_attendance_report(session, student_id)
+        messagebox.showinfo("Success", "Attendance report generated succesfully. Check /Reports folder")
+
 
     def open_statistics_for_student(self, student_id: int):
         if student_id is None:
