@@ -7,6 +7,8 @@
 
 Aplikacja w Pythonie reprezentująca dziennik elektroniczny.
 
+**<u>Please check out app/config before running</u>**
+
 ---
 
 ### Funkcje aplikacji:
