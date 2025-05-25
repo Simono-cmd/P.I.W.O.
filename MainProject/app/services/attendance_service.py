@@ -3,6 +3,7 @@ from sqlalchemy.orm import joinedload
 from MainProject.app.database.database import SessionLocal
 from MainProject.app.models.attendance import Attendance
 from MainProject.app.repositories.attendance_repository import AttendanceRepository
+from MainProject.app.services.failure_service import FailureService
 
 
 class AttendanceService:
@@ -10,6 +11,7 @@ class AttendanceService:
     @staticmethod
     def add_attendance(session: SessionLocal, student_id: int, subject_id: int, status: str, date_of: datetime) -> int:
         attendance_id = AttendanceRepository.add_attendance(session, student_id, subject_id, status.lower(), date_of)
+        FailureService.evaluate_student_risk(session, student_id, subject_id)
         return attendance_id
 
     @staticmethod
@@ -22,7 +24,9 @@ class AttendanceService:
 
     @staticmethod
     def delete_attendance(session: SessionLocal, attendance_id: int):
+        attendance = AttendanceRepository.get_attendance(session, attendance_id)
         AttendanceRepository.delete_attendance(session, attendance_id)
+        FailureService.evaluate_student_risk(session, attendance.student_id, attendance.subject_id)
 
     @staticmethod
     def get_attendance(session: SessionLocal, attendance_id: int):

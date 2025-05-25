@@ -24,8 +24,9 @@ class GradeService:
     @staticmethod
     def delete_grade(session: SessionLocal, grade_id: int):
         grade = session.query(Grade).get(grade_id)
-        FailureService.evaluate_student_risk(session, grade.student_id, grade.subject_id)
         GradeRepository.delete_grade(session, grade_id)
+        FailureService.evaluate_student_risk(session, grade.student_id, grade.subject_id)
+
 
     @staticmethod
     def get_grade(session: SessionLocal, grade_id: int) -> Grade:

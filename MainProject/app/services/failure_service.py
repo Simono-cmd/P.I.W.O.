@@ -46,3 +46,10 @@ class FailureService:
 
         session.flush()
 
+    @staticmethod
+    def is_student_at_risk(session: SessionLocal, student_id: int, subject_id: int) -> bool:
+        failure = session.query(Failure).filter_by(student_id=student_id, subject_id=subject_id).first()
+        return failure is not None
+
+
+
