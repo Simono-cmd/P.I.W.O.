@@ -27,9 +27,9 @@ Aplikacja w Pythonie reprezentująca dziennik elektroniczny.
   - Poszczególnych uczniów
   - Całej klasy
   - **Wizualizacja danych za pomocą co najmniej 3 wykresów**
-- [ ] Wygenerowanie **przykładowego dziennika** (10 uczniów z przykładowymi ocenami i obecnościami).
+- [x] Wygenerowanie **przykładowego dziennika** (10 uczniów z przykładowymi ocenami i obecnościami).
 - [ ] Dodanie **obsługi wyjątków** (co najmniej 10 różnych wyjątków).
-- [ ] Dodanie **prostego interfejsu użytkownika**.
+- [x] Dodanie **prostego interfejsu użytkownika**.
 
 <br><br><br>
 
@@ -58,9 +58,9 @@ A Python application representing an electronic gradebook.
   - Individual students
   - The entire class
   - **Visualize the data with at least 3 charts**
-- [ ] Generate a **sample gradebook** (10 students with example grades and attendance).
+- [x] Generate a **sample gradebook** (10 students with example grades and attendance).
 - [ ] Implement **exception handling** (at least 10 different exceptions).
-- [ ] Add a **simple user interface**.
+- [x] Add a **simple user interface**.
 
 
 
